@@ -74,7 +74,7 @@
                         <h6 class="w3-panel w3-pale-khaki w3-leftbar w3-rightbar w3-border-khaki">Seat's category: <span th:text="${session.seatClass.getCategoryName()}"></span> <span class="w3-right">VND</span> <span class="w3-right" th:text="${session.seatClass.getFeeCategory()}"></span></h6>
                         <p class="w3-panel w3-pale-khaki w3-leftbar w3-rightbar w3-border-khaki w3-white w3-card">Extra luggage - <span th:text="${fs.getCustomer().getFullname()}"></span><span class="w3-right"><span th:text="${fs.getLuggage().getCost()}"></span>VND</span><span class="w3-right">(<span th:text="${fs.getLuggage().getWeight()}"></span>kg)</span></p>
                         <div th:if="${fs.getSeat()}">
-                            <h6 class="w3-panel w3-pale-khaki w3-leftbar w3-rightbar w3-border-khaki">Seat x <span class="w3-text-blue" th:text="${fs.getSeat().getPosition()}"></span></h6>
+                            <h6 class="w3-panel w3-pale-khaki w3-leftbar w3-rightbar w3-border-khaki">Seat x <span class="w3-text-blue" th:text="${fs.getSeat().getPosition()}"></span><a th:href="'/flights/changeInfo/'+${fs.getSeat().getSeatID()}" class="w3-right w3-text-red"><span>Delete</span></a></h6>
                         </div>
                     </div>
                 </th:block>

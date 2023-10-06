@@ -12,6 +12,7 @@
     <script th:src="@{https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" type="text/css" href="/Client.css">
+    <link href="https://fonts.googleapis.com/css?family=Encode+Sans+Semi+Condensed:100,200,300,400" rel="stylesheet">
     <style>
         body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
         .myLink {display: none}
@@ -100,11 +101,27 @@
                 <div class="w3-row-padding" style="margin:0 -16px;">
                     <div class="w3-half">
                         <label>From</label>
-                        <input id="txtFrom" name="txtFrom" class="w3-input w3-border" type="text" placeholder="Departing from" required>
+                        <select id="txtFrom" class="w3-border w3-input btn" name="txtFrom" >
+                            <option value="" disabled selected><p class="w3-opacity">Departing from ...</p></option>
+                            <option value="Hà Nội">Hà Nội</option>
+                            <option value="Đà Nẵng">Đà Nẵng</option>
+                            <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                            <option value="Phú Quốc">Phú Quốc</option>
+                            <option value="Đà Lạt">Đà Lạt</option>
+                            <option value="Điện Biên">Điện Biên</option>
+                        </select>
                     </div>
-                    <div class="w3-half">
+                    <div class="w3-half dropdown">
                         <label>To</label>
-                        <input id="txtTo" name="txtTo" class="w3-input w3-border" type="text" placeholder="Arriving at" required>
+                        <select id="txtTo" class="w3-border w3-input btn" name="txtTo" >
+                            <option value="" disabled selected><p class="w3-opacity">To ...</p></option>
+                            <option value="Hà Nội">Hà Nội</option>
+                            <option value="Đà Nẵng">Đà Nẵng</option>
+                            <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                            <option value="Phú Quốc">Phú Quốc</option>
+                            <option value="Đà Lạt">Đà Lạt</option>
+                            <option value="Điện Biên">Điện Biên</option>
+                        </select>
                     </div>
                     <div class="w3-half">
                         <label>Date of department</label>

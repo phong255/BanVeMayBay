@@ -56,8 +56,13 @@
                                 <input th:field="*{fullname}" class="w3-input" type="text" name="fullname" th:value="${customer.fullname}">
                             </div>
                             <div class="w3-container w3-third">
-                                <h5 class="w3-opacity"><b>Sex</b></h5>
-                                <input th:field="*{sex}" class="w3-input" type="text" name="sex" th:value="${customer.sex}">
+                                <h5 class="w3-opacity"><b>Gender</b></h5>
+<!--                                <input th:field="*{sex}" class="w3-input" type="text" name="sex" th:value="${customer.sex}">-->
+                                <select th:field="*{sex}" class="w3-input" type="text" name="sex" th:value="${customer.sex}">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
                             </div>
                             <div class="w3-container w3-twothird">
                                 <h5 class="w3-opacity"><b>Birthday</b></h5>

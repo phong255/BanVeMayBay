@@ -56,10 +56,18 @@ public class FlightController {
     @Autowired
     MailSenderService mss;
     @GetMapping("/flights")
-    public String listFlight(Model model){
+    public String listFlight(Model model,HttpServletRequest request){
         ArrayList<Flight> flights = (ArrayList<Flight>) flightService.getAllFlights();
         model.addAttribute("pageTitle","Flights");
         model.addAttribute("list_flight",flights);
+        if(request.getSession().getAttribute("seatClass") != null){
+            SeatCategory sl = (SeatCategory) request.getSession().getAttribute("seatClass");
+            if(request.getSession().getAttribute("totalBill") != null){
+                long totalBill = (long)request.getSession().getAttribute("totalBill");
+                totalBill -= sl.getFeeCategory();
+                request.getSession().setAttribute("totalBill",totalBill);
+            }
+        }
         return "listFlights";
     }
 
@@ -98,12 +106,14 @@ public class FlightController {
             txtChild = 0;
         String rd = request.getParameter("rdCategoryTicket");
         SeatCategory sl = sr.getSeatCategoryByCategoryName(request.getParameter("slSeatClass"));
-        System.out.println(rd + date_return);
         model.addAttribute("pageTitle","Flights");
-        System.out.println(rd);
         if(rd.equals("rt")){
             ArrayList<Flight> flights1 = (ArrayList<Flight>) flightService.findFlightByForm(date_flight,departing_from,arriving_at);
             ArrayList<Flight> flights2 = (ArrayList<Flight>) flightService.findFlightByForm(date_return,arriving_at,departing_from);
+            if(flights1.isEmpty() || flights2.isEmpty()){
+                model.addAttribute("error","No flight can be found !");
+                return "listFlights";
+            }
             request.getSession().setAttribute("flights1",flights1);
             request.getSession().setAttribute("flights2",flights2);
             model.addAttribute("departing_from",departing_from);
@@ -124,6 +134,7 @@ public class FlightController {
             request.getSession().setAttribute("adults",txtAdults);
             request.getSession().setAttribute("child",txtChild);
             request.getSession().setAttribute("seatClass",sl);
+            request.getSession().removeAttribute("categoryTicket");
             return "listFlights";
         }
     }
@@ -165,9 +176,6 @@ public class FlightController {
 
     @GetMapping("/flights/takeFlight/{fid}&{pid}")
     public String selectedFlight(@PathVariable(name = "fid")int fid,@PathVariable(name = "pid")int pid,HttpServletRequest request,Model model){
-        SeatCategory sl = (SeatCategory) request.getSession().getAttribute("seatClass");
-        long adult = (long) request.getSession().getAttribute("adults");
-        long child = (long) request.getSession().getAttribute("child");
         Flight flight = flightService.getFlightByID(fid);
         Plane plane = pr.getPlaneByPlaneID(pid);
         ArrayList<Plane> planes = new ArrayList<>();
@@ -181,7 +189,6 @@ public class FlightController {
                 fs.setFlight(flight);
                 flightSelected.add(fs);
                 request.getSession().setAttribute("flightSelected",flightSelected);
-                request.getSession().setAttribute("totalBill",(long)(totalFee(flightSelected)*(adult + child*0.8) + sl.getFeeCategory()*(flightSelected.size()-1)));
             }
             else{
                 ArrayList<FlightSelected> flightSelected = (ArrayList<FlightSelected>) request.getSession().getAttribute("flightSelected");
@@ -201,7 +208,6 @@ public class FlightController {
                     fs.setFlight(flight);
                     flightSelected.add(fs);
                     request.getSession().setAttribute("flightSelected",flightSelected);
-                    request.getSession().setAttribute("totalBill",(long)(totalFee(flightSelected)*(adult + child*0.8) + sl.getFeeCategory()*(flightSelected.size()-1)));
                 }
             }
         }
@@ -217,7 +223,6 @@ public class FlightController {
                     fs.setFlight(flight);
                     flightSelected.add(fs);
                     request.getSession().setAttribute("flightSelected", flightSelected);
-                    request.getSession().setAttribute("totalBill",(long)(totalFee(flightSelected)*(adult + child*0.8) + sl.getFeeCategory()));
                 }
             }
             else {
@@ -226,7 +231,6 @@ public class FlightController {
                 fs.setFlight(flight);
                 flightSelected.add(fs);
                 request.getSession().setAttribute("flightSelected", flightSelected);
-                request.getSession().setAttribute("totalBill",(long)(totalFee(flightSelected)*(adult + child*0.8) + sl.getFeeCategory()*(adult + child)));
             }
         }
         model.addAttribute("pageTitle","Flights");
@@ -263,8 +267,6 @@ public class FlightController {
                     flightSelected.remove(fl);
                 }
             }
-
-            request.getSession().setAttribute("totalBill",(long)(totalFee(flightSelected)*(adult + child*0.8) + sl.getFeeCategory()*(adult + child)));
             request.getSession().setAttribute("flightSelected",flightSelected);
             model.addAttribute("pageTitle","Flights");
         }
@@ -280,6 +282,13 @@ public class FlightController {
         model.addAttribute("pageTitle","Passenger's information");
         long quanAdults = (long)request.getSession().getAttribute("adults") + (long)request.getSession().getAttribute("child");
         ArrayList<Integer> adults = new ArrayList<>();
+        //---total-bill-----
+        SeatCategory sl = (SeatCategory) request.getSession().getAttribute("seatClass");
+        long adult = (long) request.getSession().getAttribute("adults");
+        long child = (long) request.getSession().getAttribute("child");
+        ArrayList<FlightSelected> flightSelecteds = (ArrayList<FlightSelected>) request.getSession().getAttribute("flightSelected");
+        request.getSession().setAttribute("totalBill",(long)(totalFee(flightSelecteds)*(adult + child*0.8) + sl.getFeeCategory()*(adult + child)));
+        //-------------------
         for(int i=0;i<quanAdults;i++)
             adults.add(i);
         model.addAttribute("adults",adults);
@@ -362,7 +371,6 @@ public class FlightController {
             model.addAttribute("pageTitle","Select seat");
             return "selectSeat";
         }
-        System.out.println(seat.getPosition());
         for(FlightSelected f : flightSelecteds){
             if(f.getSeat() != null) {
                 if (f.getFlight().getDeparting_from().equals(flight.getDeparting_from()) && f.getFlight().getArriving_at().equals(flight.getArriving_at()) && f.getCustomer().getEmail().equals(cemail)) {
@@ -377,7 +385,7 @@ public class FlightController {
             if(f.getSeat() == null) {
                 seat.setStatus(2);
                 f.setSeat(seat);
-                f.setAirfares(f.getAirfares() + seat.getSeatCategory().getFeeCategory());
+                f.setAirfares(f.getAirfares() + seat.getSeatCategory().getFeeCategory() + f.getFlight().getFee_flight());
                 seatRepositoriesr.save(seat);
                 for (Plane p :
                         f.getFlight().getPlanes()) {
@@ -393,9 +401,48 @@ public class FlightController {
         model.addAttribute("pageTitle","Select seat");
         return "selectSeat";
     }
+    @GetMapping("/flights/changeInfo/{sid}")
+    public String changeInfo(@PathVariable("sid") int sid,Model model,HttpServletRequest request){
+        ArrayList<FlightSelected> flightSelecteds = (ArrayList<FlightSelected>) request.getSession().getAttribute("flightSelected");
+        Seat seat = seatRepositoriesr.getSeatBySeatID(sid);
+        SeatCategory sl = (SeatCategory) request.getSession().getAttribute("seatClass");
+        for(FlightSelected f : flightSelecteds){
+            if(f.getSeat().getSeatID() == sid) {
+                seat.setStatus(0);
+                f.setSeat(null);
+                f.setAirfares(f.getAirfares() + seat.getSeatCategory().getFeeCategory() + f.getFlight().getFee_flight());
+                seatRepositoriesr.save(seat);
+                f.setSeats(null);
+                for (Plane p :
+                        f.getFlight().getPlanes()) {
+                    ArrayList<Seat> seats = seatRepositoriesr.getSeatsBySeatCategory_CategoryNameAndPlane_PlaneID(sl.getCategoryName(),p.getPlaneID());
+                    f.setSeats(seats);
+                }
+                break;
+            }
+        }
+        request.getSession().setAttribute("flightSelected",flightSelecteds);
+        model.addAttribute("pageTitle","Select seat");
+        return "selectSeat";
+    }
 
     @GetMapping("/flights/displayPayment")
     public String displayPayment(Model model,HttpServletRequest request){
+        ArrayList<FlightSelected> flightSelecteds = (ArrayList<FlightSelected>) request.getSession().getAttribute("flightSelected");
+        SeatCategory sl = (SeatCategory) request.getSession().getAttribute("seatClass");
+        for (FlightSelected f :
+                flightSelecteds) {
+            if(f.getSeat() == null){
+                model.addAttribute("error","No seat has been selected!");
+                for (Plane p :
+                        f.getFlight().getPlanes()) {
+                    ArrayList<Seat> seats = seatRepositoriesr.getSeatsBySeatCategory_CategoryNameAndPlane_PlaneID(sl.getCategoryName(),p.getPlaneID());
+                    f.setSeats(seats);
+                }
+                request.getSession().setAttribute("flightSelected",flightSelecteds);
+                return "selectSeat";
+            }
+        }
         model.addAttribute("pageTitle","Payment");
         return "payment";
     }

@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="w3-container w3-half">
                                     <h5 class="w3-opacity"><b>Extra luggage</b></h5>
-                                    <select class="w3-select" th:name="'luggage'+${adult}">
+                                    <select class="w3-select" th:name="'luggage'+${adult}" required>
                                         <option value="" disabled selected>Choose category luggage</option>
                                         <th:block th:each="luggage : ${luggages}">
                                             <option th:value="${luggage.getLuggageID()}"><span th:text="${luggage.getWeight()}"></span> kg (<span th:text="${luggage.getCost()}"></span> VND)</option>
