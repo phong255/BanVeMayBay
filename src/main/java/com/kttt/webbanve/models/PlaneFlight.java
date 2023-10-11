@@ -6,29 +6,26 @@ import jakarta.persistence.*;
 @Table(name = "plane_flight")
 public class PlaneFlight {
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Id
     @JoinColumn(name = "flightID")
-    private Flight flight;
+    private int flightID;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @Id
+    @Id
     @JoinColumn(name = "planeID")
-    private Plane plane;
+    private int planeID;
 
-    public Flight getFlight() {
-        return flight;
+    public int getFlightID() {
+        return flightID;
     }
 
-    public void setFlight(Flight flight) {
-        this.flight = flight;
+    public void setFlightID(int flightID) {
+        this.flightID = flightID;
     }
 
-    public Plane getPlane() {
-        return plane;
+    public int getPlaneID() {
+        return planeID;
     }
 
-    public void setPlane(Plane plane) {
-        this.plane = plane;
+    public void setPlaneID(int planeID) {
+        this.planeID = planeID;
     }
 }

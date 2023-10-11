@@ -87,25 +87,25 @@ public class FlightAdminController {
                             RedirectAttributes redirectAttributes) {
         String feeFlightx = request.getParameter("feeFlightx");
         try {
-            if(flight.getDeparting_from().trim().equals("")){
+            if(flight.getDepartingFrom().trim().equals("")){
                 redirectAttributes.addFlashAttribute("departingForm", "DepartingForm cannot be null");
                 return "redirect:/admin/addFlight";
             }
-            if(flight.getArriving_at().trim().equals("")) {
+            if(flight.getArrivingAt().trim().equals("")) {
                 redirectAttributes.addFlashAttribute("arrivingAt", "Arriving at cannot be null");
                 return "redirect:/admin/addFlight";
             }
-            if(flight.getFlight_time().trim().equals("")) {
+            if(flight.getFlightTime().trim().equals("")) {
                 redirectAttributes.addFlashAttribute("flightTime", "Flight time is cannot be null");
                 return "redirect:/admin/addFlight";
-            } else if (Integer.parseInt(flight.getFlight_time())<1) {
+            } else if (Integer.parseInt(flight.getFlightTime())<1) {
                 redirectAttributes.addFlashAttribute("flightTime", "Flight time is higher 0");
                 return "redirect:/admin/addFlight";
             }
-            if(flight.getDeparture_time().trim().equals("")) {
+            if(flight.getDepartureTime().trim().equals("")) {
                 redirectAttributes.addFlashAttribute("departureTime", "Departure time is cannot be null");
                 return "redirect:/admin/addFlight";
-            } else if (Integer.parseInt(flight.getDeparture_time())<1) {
+            } else if (Integer.parseInt(flight.getDepartureTime())<1) {
                 redirectAttributes.addFlashAttribute("departureTime", "Departure time is higher 0");
                 return "redirect:/admin/addFlight";
             }
@@ -116,7 +116,7 @@ public class FlightAdminController {
                 redirectAttributes.addFlashAttribute("feeFlight", "Fee flight is higher 0");
                 return "redirect:/admin/addFlight";
             }
-            flight.setFee_flight(Long.parseLong(feeFlightx));
+            flight.setFeeFlight(Long.parseLong(feeFlightx));
             flightService.save(flight);
             return "redirect:/admin/flightList";
         } catch (Exception e) {
@@ -147,28 +147,28 @@ public class FlightAdminController {
         try {
             if(flightService.findById(flightId).isPresent()) {
                 Flight foundFlight = flightService.findById(flightId).get();
-                if(flight.getDeparting_from().trim().equals("")){
+                if(flight.getDepartingFrom().trim().equals("")){
                     redirectAttributes.addFlashAttribute("departingForm", "DepartingForm cannot be null");
                     return "redirect:/admin/updateFlight/{flightId}";
                 }
 
-                if(flight.getArriving_at().trim().equals("")) {
+                if(flight.getArrivingAt().trim().equals("")) {
                     redirectAttributes.addFlashAttribute("arrivingAt", "Arriving at cannot be null");
                     return "redirect:/admin/updateFlight/{flightId}";
                 }
 
-                if(flight.getFlight_time().trim().equals("")) {
+                if(flight.getFlightTime().trim().equals("")) {
                     redirectAttributes.addFlashAttribute("flightTime", "Flight time is cannot be null");
                     return "redirect:/admin/updateFlight/{flightId}";
-                } else if (Integer.parseInt(flight.getFlight_time())<1) {
+                } else if (Integer.parseInt(flight.getFlightTime())<1) {
                     redirectAttributes.addFlashAttribute("flightTime", "Flight time is higher 0");
                     return "redirect:/admin/updateFlight/{flightId}";
                 }
 
-                if(flight.getDeparture_time().trim().equals("")) {
+                if(flight.getDepartureTime().trim().equals("")) {
                     redirectAttributes.addFlashAttribute("departureTime", "Departure time is cannot be null");
                     return "redirect:/admin/updateFlight/{flightId}";
-                } else if (Integer.parseInt(flight.getDeparture_time())<1) {
+                } else if (Integer.parseInt(flight.getDepartureTime())<1) {
                     redirectAttributes.addFlashAttribute("departureTime", "Departure time is higher 0");
                     return "redirect:/admin/updateFlight/{flightId}";
                 }
@@ -180,11 +180,11 @@ public class FlightAdminController {
                     redirectAttributes.addFlashAttribute("feeFlight", "Fee flight is higher 0");
                     return "redirect:/admin/updateFlight/{flightId}";
                 }
-                foundFlight.setDeparting_from(flight.getDeparting_from());
-                foundFlight.setArriving_at(flight.getArriving_at());
-                foundFlight.setFlight_time(flight.getFlight_time());
-                foundFlight.setDeparture_time(flight.getDeparture_time());
-                foundFlight.setFee_flight(Long.parseLong(feeFlightx));
+                foundFlight.setDepartingFrom(flight.getDepartingFrom());
+                foundFlight.setArrivingAt(flight.getArrivingAt());
+                foundFlight.setFlightTime(flight.getFlightTime());
+                foundFlight.setDepartureTime(flight.getDepartureTime());
+                foundFlight.setFeeFlight(Long.parseLong(feeFlightx));
                 flightService.save(foundFlight);
             }
             return "redirect:/admin/flightList";

@@ -14,4 +14,5 @@ public interface PlaneService {
     Plane save(Plane plane);
     Optional<Plane> findById(int id);
     void deleteById(int id);
+    Plane findByPID(int id);
 }

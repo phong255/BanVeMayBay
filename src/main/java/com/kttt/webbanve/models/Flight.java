@@ -15,26 +15,26 @@ public class Flight {
     @Column(name = "flightID")
     private int flightID;
 
-    @Column(name = "departing_from")
-    private String departing_from;
+    @Column(name = "departingFrom")
+    private String departingFrom;
 
-    @Column(name = "arriving_at")
-    private String arriving_at;
+    @Column(name = "arrivingAt")
+    private String arrivingAt;
 
-    @Column(name = "flight_time")
-    private String flight_time;
+    @Column(name = "flightTime")
+    private String flightTime;
 
-    @Column(name = "departure_time")
-    private String departure_time;
+    @Column(name = "departureTime")
+    private String departureTime;
 
-    @Column(name = "date_flight")
-    private String date_flight;
+    @Column(name = "dateFlight")
+    private String dateFlight;
 
-    @Column(name = "fee_flight")
-    private long fee_flight;
+    @Column(name = "feeFlight")
+    private long feeFlight;
 
-    @Column(name = "travel_time")
-    private String travel_time;
+    @Column(name = "travelTime")
+    private String travelTime;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "plane_flight", joinColumns = {@JoinColumn(name = "flightID",referencedColumnName = "flightID")}, inverseJoinColumns = {@JoinColumn(name = "planeID",referencedColumnName = "planeID")})
@@ -46,64 +46,64 @@ public class Flight {
         return flightID;
     }
 
-    public String getArriving_at() {
-        return arriving_at;
-    }
-
-    public long getFee_flight() {
-        return fee_flight;
-    }
-
-    public String getDeparting_from() {
-        return departing_from;
-    }
-
-    public String getDeparture_time() {
-        return departure_time;
-    }
-
-    public String getFlight_time() {
-        return flight_time;
-    }
-
-    public void setArriving_at(String arriving_at) {
-        this.arriving_at = arriving_at;
-    }
-
-    public void setDeparting_from(String departing_from) {
-        this.departing_from = departing_from;
-    }
-
-    public void setDeparture_time(String departure_time) {
-        this.departure_time = departure_time;
-    }
-
-    public void setFee_flight(long fee_flight) {
-        this.fee_flight = fee_flight;
-    }
-
     public void setFlightID(int flightID) {
         this.flightID = flightID;
     }
 
-    public void setFlight_time(String flight_time) {
-        this.flight_time = flight_time;
+    public String getDepartingFrom() {
+        return departingFrom;
     }
 
-    public String getTravel_time() {
-        return travel_time;
+    public void setDepartingFrom(String departingFrom) {
+        this.departingFrom = departingFrom;
     }
 
-    public void setTravel_time(String travel_time) {
-        this.travel_time = travel_time;
+    public String getArrivingAt() {
+        return arrivingAt;
     }
 
-    public String getDate_flight() {
-        return date_flight;
+    public void setArrivingAt(String arrivingAt) {
+        this.arrivingAt = arrivingAt;
     }
 
-    public void setDate_flight(String date_flight) {
-        this.date_flight = date_flight;
+    public String getFlightTime() {
+        return flightTime;
+    }
+
+    public void setFlightTime(String flightTime) {
+        this.flightTime = flightTime;
+    }
+
+    public String getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(String departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public String getDateFlight() {
+        return dateFlight;
+    }
+
+    public void setDateFlight(String dateFlight) {
+        this.dateFlight = dateFlight;
+    }
+
+    public long getFeeFlight() {
+        return feeFlight;
+    }
+
+    public void setFeeFlight(long feeFlight) {
+        this.feeFlight = feeFlight;
+    }
+
+    public String getTravelTime() {
+        return travelTime;
+    }
+
+    public void setTravelTime(String travelTime) {
+        this.travelTime = travelTime;
     }
 
     public List<Plane> getPlanes() {
@@ -144,6 +144,6 @@ public class Flight {
     }
 
     public String getFlightRouter() {
-        return this.getDeparting_from() + " -> " + this.getArriving_at();
+        return this.getDepartingFrom() + " -> " + this.getArrivingAt();
     }
 }

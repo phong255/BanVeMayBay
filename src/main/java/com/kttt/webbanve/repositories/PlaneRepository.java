@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface PlaneRepository extends JpaRepository<Plane, Integer> {
+    Plane findByPlaneID(int pid);
 }

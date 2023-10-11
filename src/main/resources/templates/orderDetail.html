@@ -22,7 +22,7 @@
         </tr>
         <tr>
             <td><b>TỔNG SỐ TIỀN</b></td>
-            <td><span th:text="${order.getTotal_cost()}"></span></td>
+            <td><span th:text="${#numbers.formatCurrency(order.getTotal_cost())}"></span></td>
         </tr>
         <tr>
             <td><b>NƠI XUẤT HÓA ĐƠN</b></td>

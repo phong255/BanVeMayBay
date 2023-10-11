@@ -56,7 +56,7 @@ public class FlightServiceImpl implements FlightService{
     }
 
     public List<Flight> getAllFlights(){
-        return fl.findAll();
+        return flightRepository.findAll();
     }
 
     @Override
@@ -64,8 +64,9 @@ public class FlightServiceImpl implements FlightService{
         return null;
     }
 
-    public List<Flight> findFlightByForm(String date_flight,String departing_from,String arriving_at){
-        return fl.getFlightsByDate_flightAndDeparting_fromAndArriving_at(date_flight,departing_from,arriving_at);
+    public Page<Flight> findFlightByForm(String date_flight,String departing_from,String arriving_at,int pageNumber){
+        Pageable pageable = PageRequest.of(pageNumber-1,4);
+        return fl.findAllByDateFlightAndDepartingFromAndArrivingAt(date_flight,departing_from,arriving_at,pageable);
     }
 
     public Flight getFlightByID(int fid){

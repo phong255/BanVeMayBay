@@ -50,4 +50,9 @@ public class PlaneServiceImpl implements PlaneService {
     public void deleteById(int id) {
         planeRepository.deleteById(id);
     }
+
+    @Override
+    public Plane findByPID(int id) {
+        return planeRepository.findByPlaneID(id);
+    }
 }

@@ -75,8 +75,8 @@
                                     <button class="w3-button w3-hover-none w3-text-blue">Flight details <i class="fa fa-solid fa-caret-down"></i></button>
                                     <div class="w3-card w3-animate-opacity w3-display-hover show-detail w3-white">
                                         <p>Aircraft :<span class="w3-text-blue" th:text="${plane.getPlane_name()}"></span> Operated by <span th:text="${plane.getAirlineCompany().getAirline_name()}"></span></p>
-                                        <p>Travel time :<span th:text="${fs.getFlight().getTravel_time()}"></span></p>
-                                        <p>Departing at <span th:text="${fs.getFlight().getDate_flight()}"></span> (<span class="w3-text-blue" th:text="${fs.getFlight().getDeparting_from()}"></span > <i class="fa fa-thin fa-arrow-right" style="margin: 0 10px 0 10px;"></i> <span class="w3-text-blue" th:text="${fs.getFlight().getArriving_at()}"></span>)</p>
+                                        <p>Travel time :<span th:text="${fs.getFlight().getTravelTime()}"></span></p>
+                                        <p>Departing at <span th:text="${fs.getFlight().getDateFlight()}"></span> (<span class="w3-text-blue" th:text="${fs.getFlight().getDepartingFrom()}"></span > <i class="fa fa-thin fa-arrow-right" style="margin: 0 10px 0 10px;"></i> <span class="w3-text-blue" th:text="${fs.getFlight().getArrivingAt()}"></span>)</p>
                                     </div>
                                 </div>
                             </div>
@@ -85,17 +85,17 @@
                                     <i class="fa fa-solid fa-plane"></i>
                                 </div>
                                 <div class="flex2-row" style="height:15%;">
-                                    <span th:text="${fs.getFlight().getFlight_time()}"></span> <span style="margin: 0 10px 0 10px;">→</span> <span th:text="${fs.getFlight().getDeparture_time()}"></span>
+                                    <span th:text="${fs.getFlight().getFlightTime()}"></span> <span style="margin: 0 10px 0 10px;">→</span> <span th:text="${fs.getFlight().getDepartureTime()}"></span>
                                 </div>
                                 <div class="flex2-row" style="height:15%;">
                                     <span>Bay thẳng</span>
                                 </div>
                                 <div class="flex2-row" style="height:30%">
-                                    (<span th:text="${fs.getFlight().getDeparting_from()}"></span ><i class="fa fa-solid fa-arrow-right" style="margin: 0 10px 0 10px;"></i><span th:text="${fs.getFlight().getArriving_at()}"></span>)
+                                    (<span th:text="${fs.getFlight().getDepartingFrom()}"></span ><i class="fa fa-solid fa-arrow-right" style="margin: 0 10px 0 10px;"></i><span th:text="${fs.getFlight().getArrivingAt()}"></span>)
                                 </div>
                             </div>
                             <div class="flex3 w3-display-container">
-                                <div class="w3-text-red" style="height: 75%;display: flex;justify-content: center;align-items: center;font-size: 17px;"><span th:text="${fs.getFlight().getFee_flight()}"></span> VND</div>
+                                <div class="w3-text-red" style="height: 75%;display: flex;justify-content: center;align-items: center;font-size: 17px;"><span th:text="${#numbers.formatCurrency(fs.getFlight().getFeeFlight())}"></span> VND</div>
                                 <a th:href="@{'/flights/delFlight/' + ${fs.getFlight().getFlightID()}}" class="w3-text-blue w3-display-bottommiddle" style="margin-bottom: 15px;">Delete</a>
                             </div>
                         </div>
@@ -105,29 +105,29 @@
         </div>
     </div>
     <hr>
-    <div th:unless="${session.flights}">
+    <div th:unless="${session.planes}">
         <div th:unless="${session.categoryTicket}">
             <h1 class="w3-center">No flight can be found</h1>
         </div>
     </div>
     <div th:if="${session.categoryTicket}">
-        <div th:unless="${session.flights1}">
+        <div th:unless="${session.planes1}">
             <h1 class="w3-center">No flight can be found</h1>
         </div>
-        <div th:unless="${session.flights2}">
+        <div th:unless="${session.planes2}">
             <h1 class="w3-center">No flight can be found</h1>
         </div>
-        <div th:if="${session.flights1}">
-            <div th:if="${session.flights2}">
-                <th:block th:each = "flight : ${session.flights1}">
+        <div th:if="${session.planes1}">
+            <div th:if="${session.planes2}">
+                <th:block>
                     <div class="w3-container w3-margin-bottom">
-                        <h3 class="w3-center"><span th:text="${flight.getDeparting_from()}"></span><i class="fa fa-thin fa-arrow-right" style="margin: 0 10px 0 10px;"></i><span th:text="${flight.getArriving_at()}"></span></h3>
-                        <p class="w3-center"><span th:text="${flight.getDate_flight()}"></span>  |  <span th:text="${session.adults} + ${session.child}"></span> hành khách  |  <span th:text="${session.seatClass.categoryName}"></span></p>
+                        <h3 class="w3-center"><span th:text="${session.departing_from}"></span><i class="fa fa-thin fa-arrow-right" style="margin: 0 10px 0 10px;"></i><span th:text="${session.arriving_at}"></span></h3>
+                        <p class="w3-center"><span th:text="${session.date_flight}"></span>  |  <span th:text="${session.adults} + ${session.child}"></span> passenger  |  <span th:text="${session.seatClass.categoryName}"></span></p>
                     </div>
                 </th:block>
                 <div class="w3-row-padding">
-                    <th:block th:each = "flight : ${session.flights1}">
-                        <th:block th:each = "plane : ${flight.getPlanes()}">
+                    <th:block th:each = "plane : ${session.planes1}">
+                        <th:block th:each = "flight : ${plane.getFlights()}">
                             <div class="w3-half w3-margin-bottom">
                                 <div class="flex w3-container w3-white w3-card">
                                     <div class="flex1">
@@ -137,8 +137,8 @@
                                             <button class="w3-button w3-hover-none w3-text-blue">Flight details <i class="fa fa-solid fa-caret-down"></i></button>
                                             <div class="w3-card w3-animate-opacity w3-display-hover show-detail w3-white">
                                                 <p>Aircraft :<span class="w3-text-blue" th:text="${plane.getPlane_name()}"></span> Operated by <span th:text="${plane.getAirlineCompany().getAirline_name()}"></span></p>
-                                                <p>Travel time :<span th:text="${flight.getTravel_time()}"></span></p>
-                                                <p>Departing at <span th:text="${flight.getDate_flight()}"></span> (<span class="w3-text-blue" th:text="${flight.getDeparting_from()}"></span > <i class="fa fa-thin fa-arrow-right" style="margin: 0 10px 0 10px;"></i> <span class="w3-text-blue" th:text="${flight.getArriving_at()}"></span>)</p>
+                                                <p>Travel time :<span th:text="${flight.getTravelTime()}"></span></p>
+                                                <p>Departing at <span th:text="${flight.getDateFlight()}"></span> (<span class="w3-text-blue" th:text="${flight.getDepartingFrom()}"></span > <i class="fa fa-thin fa-arrow-right" style="margin: 0 10px 0 10px;"></i> <span class="w3-text-blue" th:text="${flight.getArrivingAt()}"></span>)</p>
                                             </div>
                                         </div>
                                     </div>
@@ -147,17 +147,17 @@
                                             <i class="fa fa-solid fa-plane"></i>
                                         </div>
                                         <div class="flex2-row" style="height:15%;">
-                                            <span th:text="${flight.getFlight_time()}"></span> <span style="margin: 0 10px 0 10px;">→</span> <span th:text="${flight.getDeparture_time()}"></span>
+                                            <span th:text="${flight.getFlightTime()}"></span> <span style="margin: 0 10px 0 10px;">→</span> <span th:text="${flight.getDepartureTime()}"></span>
                                         </div>
                                         <div class="flex2-row" style="height:15%;">
                                             <span>Bay thẳng</span>
                                         </div>
                                         <div class="flex2-row" style="height:30%">
-                                            (<span th:text="${flight.getDeparting_from()}"></span ><i class="fa fa-solid fa-arrow-right" style="margin: 0 10px 0 10px;"></i><span th:text="${flight.getArriving_at()}"></span>)
+                                            (<span th:text="${flight.getDepartingFrom()}"></span ><i class="fa fa-solid fa-arrow-right" style="margin: 0 10px 0 10px;"></i><span th:text="${flight.getArrivingAt()}"></span>)
                                         </div>
                                     </div>
                                     <div class="flex3 w3-display-container">
-                                        <div class="w3-text-red" style="height: 75%;display: flex;justify-content: center;align-items: center;font-size: 17px;"><span th:text="${flight.getFee_flight()}"></span> VND</div>
+                                        <div class="w3-text-red" style="height: 75%;display: flex;justify-content: center;align-items: center;font-size: 17px;"><span th:text="${#numbers.formatCurrency(flight.getFeeFlight())}"></span> VND</div>
                                         <a th:href="'/flights/takeFlight/'+${flight.getFlightID()}+'&'+${plane.getPlaneID()}" class="w3-button w3-red w3-display-bottommiddle" style="margin-bottom: 10px;">Select</a>
                                     </div>
                                 </div>
@@ -165,15 +165,34 @@
                         </th:block>
                     </th:block>
                 </div>
-                <th:block th:each = "flight : ${session.flights2}">
+                <nav aria-label="Page navigation example" class="w3-center">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" th:href="'/flights/search/v2/page/'+${pageNum}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <th:block th:each="i : ${#numbers.sequence(1,session.totalPages1)}">
+                            <li class="page-item"><a th:href="'/flights/search/v2/page/'+${i}">[[${i}]]</a></li>
+                        </th:block>
+                        <li class="page-item">
+                            <a class="page-link" th:href="'/flights/search/v2/page/'+${pageNum}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <th:block>
                     <div class="w3-container w3-margin-bottom">
-                        <h3 class="w3-center"><span th:text="${flight.getDeparting_from()}"></span><i class="fa fa-thin fa-arrow-right" style="margin: 0 10px 0 10px;"></i><span th:text="${flight.getArriving_at()}"></span></h3>
-                        <p class="w3-center"><span th:text="${flight.getDate_flight()}"></span>  |  <span th:text="${session.adults} + ${session.child}"></span> hành khách  |  <span th:text="${session.seatClass.categoryName}"></span></p>
+                        <h3 class="w3-center"><span th:text="${session.arriving_at}"></span><i class="fa fa-thin fa-arrow-right" style="margin: 0 10px 0 10px;"></i><span th:text="${session.departing_from}"></span></h3>
+                        <p class="w3-center"><span th:text="${session.date_return}"></span>  |  <span th:text="${session.adults} + ${session.child}"></span> hành khách  |  <span th:text="${session.seatClass.categoryName}"></span></p>
                     </div>
                 </th:block>
                 <div class="w3-row-padding">
-                    <th:block th:each = "flight : ${session.flights2}">
-                        <th:block th:each = "plane : ${flight.getPlanes()}">
+                    <th:block th:each = "plane : ${session.planes2}">
+                        <th:block th:each = "flight : ${plane.getFlights()}">
                             <div class="w3-half w3-margin-bottom">
                                 <div class="flex w3-container w3-white w3-card">
                                     <div class="flex1">
@@ -183,8 +202,8 @@
                                             <button class="w3-button w3-hover-none w3-text-blue">Flight details <i class="fa fa-solid fa-caret-down"></i></button>
                                             <div class="w3-card w3-animate-opacity w3-display-hover show-detail w3-white">
                                                 <p>Aircraft :<span class="w3-text-blue" th:text="${plane.getPlane_name()}"></span> Operated by <span th:text="${plane.getAirlineCompany().getAirline_name()}"></span></p>
-                                                <p>Travel time :<span th:text="${flight.getTravel_time()}"></span></p>
-                                                <p>Departing at <span th:text="${flight.getDate_flight()}"></span> (<span class="w3-text-blue" th:text="${flight.getDeparting_from()}"></span > <i class="fa fa-thin fa-arrow-right" style="margin: 0 10px 0 10px;"></i> <span class="w3-text-blue" th:text="${flight.getArriving_at()}"></span>)</p>
+                                                <p>Travel time :<span th:text="${flight.getTravelTime()}"></span></p>
+                                                <p>Departing at <span th:text="${flight.getDateFlight()}"></span> (<span class="w3-text-blue" th:text="${flight.getDepartingFrom()}"></span > <i class="fa fa-thin fa-arrow-right" style="margin: 0 10px 0 10px;"></i> <span class="w3-text-blue" th:text="${flight.getArrivingAt()}"></span>)</p>
                                             </div>
                                         </div>
                                     </div>
@@ -193,17 +212,17 @@
                                             <i class="fa fa-solid fa-plane"></i>
                                         </div>
                                         <div class="flex2-row" style="height:15%;">
-                                            <span th:text="${flight.getFlight_time()}"></span> <span style="margin: 0 10px 0 10px;">→</span> <span th:text="${flight.getDeparture_time()}"></span>
+                                            <span th:text="${flight.getFlightTime()}"></span> <span style="margin: 0 10px 0 10px;">→</span> <span th:text="${flight.getDepartureTime()}"></span>
                                         </div>
                                         <div class="flex2-row" style="height:15%;">
                                             <span>Bay thẳng</span>
                                         </div>
                                         <div class="flex2-row" style="height:30%">
-                                            (<span th:text="${flight.getDeparting_from()}"></span ><i class="fa fa-solid fa-arrow-right" style="margin: 0 10px 0 10px;"></i><span th:text="${flight.getArriving_at()}"></span>)
+                                            (<span th:text="${flight.getDepartingFrom()}"></span ><i class="fa fa-solid fa-arrow-right" style="margin: 0 10px 0 10px;"></i><span th:text="${flight.getArrivingAt()}"></span>)
                                         </div>
                                     </div>
                                     <div class="flex3 w3-display-container">
-                                        <div class="w3-text-red" style="height: 75%;display: flex;justify-content: center;align-items: center;font-size: 17px;"><span th:text="${flight.getFee_flight()}"></span> VND</div>
+                                        <div class="w3-text-red" style="height: 75%;display: flex;justify-content: center;align-items: center;font-size: 17px;"><span th:text="${#numbers.formatCurrency(flight.getFeeFlight())}"></span> VND</div>
                                         <a th:href="'/flights/takeFlight/'+${flight.getFlightID()}+'&'+${plane.getPlaneID()}" class="w3-button w3-red w3-display-bottommiddle" style="margin-bottom: 10px;">Select</a>
                                     </div>
                                 </div>
@@ -211,55 +230,96 @@
                         </th:block>
                     </th:block>
                 </div>
+                <nav aria-label="Page navigation example" class="w3-center">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" th:href="'/flights/search/v2/page/'+${pageNum}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <th:block th:each="i : ${#numbers.sequence(1,session.totalPages2)}">
+                            <li class="page-item"><a th:href="'/flights/search/v2/page/'+${i}">[[${i}]]</a></li>
+                        </th:block>
+                        <li class="page-item">
+                            <a class="page-link" th:href="'/flights/search/v2/page/'+${pageNum}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
-    <th:block th:each = "flight : ${session.flights}">
-        <div class="w3-container w3-margin-bottom">
-            <h3 class="w3-center"><span th:text="${flight.getDeparting_from()}"></span><i class="fa fa-thin fa-arrow-right" style="margin: 0 10px 0 10px;"></i><span th:text="${flight.getArriving_at()}"></span></h3>
-            <p class="w3-center"><span th:text="${flight.getDate_flight()}"></span>  |  <span th:text="${session.adults} + ${session.child}"></span> hành khách  |  <span th:text="${session.seatClass.categoryName}"></span></p>
-        </div>
-    </th:block>
-    <div class="w3-row-padding">
-        <th:block th:each = "flight : ${session.flights}">
-            <th:block th:each = "plane : ${flight.getPlanes()}">
-                <div class="w3-half w3-margin-bottom">
-                    <div class="flex w3-container w3-white w3-card">
-                        <div class="flex1">
-                            <img style="width: 110px;" th:src="@{'/airlineCompanies/' + ${plane.getAirlineCompany().getAirline_image()}}" alt="Bamboo Airways">
-                            <h4><span th:text="${plane.getAirlineCompany().getAirline_name()}"></span></h4>
-                            <div class="w3-dropdown-click w3-display-container">
-                                <button class="w3-button w3-hover-none w3-text-blue">Flight details <i class="fa fa-solid fa-caret-down"></i></button>
-                                <div class="w3-card w3-animate-opacity w3-display-hover show-detail w3-white">
-                                    <p>Aircraft :<span class="w3-text-blue" th:text="${plane.getPlane_name()}"></span> Operated by <span th:text="${plane.getAirlineCompany().getAirline_name()}"></span></p>
-                                    <p>Travel time :<span th:text="${flight.getTravel_time()}"></span></p>
-                                    <p>Departing at <span th:text="${flight.getDate_flight()}"></span> (<span class="w3-text-blue" th:text="${flight.getDeparting_from()}"></span > <i class="fa fa-thin fa-arrow-right" style="margin: 0 10px 0 10px;"></i> <span class="w3-text-blue" th:text="${flight.getArriving_at()}"></span>)</p>
+    <div th:if="${session.planes}">
+        <th:block >
+            <div class="w3-container w3-margin-bottom">
+                <h3 class="w3-center"><span th:text="${session.departing_from}"></span><i class="fa fa-thin fa-arrow-right" style="margin: 0 10px 0 10px;"></i><span th:text="${session.arriving_at}"></span></h3>
+                <p class="w3-center"><span th:text="${session.date_flight}"></span>  |  <span th:text="${session.adults} + ${session.child}"></span> passengers  |  <span th:text="${session.seatClass.categoryName}"></span></p>
+            </div>
+        </th:block>
+        <div class="w3-row-padding">
+            <th:block th:each = "plane : ${session.planes}">
+                <th:block th:each = "flight : ${plane.getFlights()}">
+                    <div class="w3-half w3-margin-bottom">
+                        <div class="flex w3-container w3-white w3-card">
+                            <div class="flex1">
+                                <img style="width: 110px;" th:src="@{'/airlineCompanies/' + ${plane.getAirlineCompany().getAirline_image()}}" alt="Bamboo Airways">
+                                <h4><span th:text="${plane.getAirlineCompany().getAirline_name()}"></span></h4>
+                                <div class="w3-dropdown-click w3-display-container">
+                                    <button class="w3-button w3-hover-none w3-text-blue">Flight details <i class="fa fa-solid fa-caret-down"></i></button>
+                                    <div class="w3-card w3-animate-opacity w3-display-hover show-detail w3-white">
+                                        <p>Aircraft :<span class="w3-text-blue" th:text="${plane.getPlane_name()}"></span> Operated by <span th:text="${plane.getAirlineCompany().getAirline_name()}"></span></p>
+                                        <p>Travel time :<span th:text="${flight.getTravelTime()}"></span></p>
+                                        <p>Departing at <span th:text="${flight.getDateFlight()}"></span> (<span class="w3-text-blue" th:text="${flight.getDepartingFrom()}"></span > <i class="fa fa-thin fa-arrow-right" style="margin: 0 10px 0 10px;"></i> <span class="w3-text-blue" th:text="${flight.getArrivingAt()}"></span>)</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="flex2">
-                            <div class="flex2-row" style="height:40%;">
-                                <i class="fa fa-solid fa-plane"></i>
+                            <div class="flex2">
+                                <div class="flex2-row" style="height:40%;">
+                                    <i class="fa fa-solid fa-plane"></i>
+                                </div>
+                                <div class="flex2-row" style="height:15%;">
+                                    <span th:text="${flight.getFlightTime()}"></span> <span style="margin: 0 10px 0 10px;">→</span> <span th:text="${flight.getDepartureTime()}"></span>
+                                </div>
+                                <div class="flex2-row" style="height:15%;">
+                                    <span>Bay thẳng</span>
+                                </div>
+                                <div class="flex2-row" style="height:30%">
+                                    (<span th:text="${flight.getDepartingFrom()}"></span ><i class="fa fa-solid fa-arrow-right" style="margin: 0 10px 0 10px;"></i><span th:text="${flight.getArrivingAt()}"></span>)
+                                </div>
                             </div>
-                            <div class="flex2-row" style="height:15%;">
-                                <span th:text="${flight.getFlight_time()}"></span> <span style="margin: 0 10px 0 10px;">→</span> <span th:text="${flight.getDeparture_time()}"></span>
+                            <div class="flex3 w3-display-container">
+                                <div class="w3-text-red" style="height: 75%;display: flex;justify-content: center;align-items: center;font-size: 17px;"><span th:text="${#numbers.formatCurrency(flight.getFeeFlight())}"></span> VND</div>
+                                <a th:href="'/flights/takeFlight/'+${flight.getFlightID()}+'&'+${plane.getPlaneID()}" class="w3-button w3-red w3-display-bottommiddle" style="margin-bottom: 10px;">Select</a>
                             </div>
-                            <div class="flex2-row" style="height:15%;">
-                                <span>Bay thẳng</span>
-                            </div>
-                            <div class="flex2-row" style="height:30%">
-                                (<span th:text="${flight.getDeparting_from()}"></span ><i class="fa fa-solid fa-arrow-right" style="margin: 0 10px 0 10px;"></i><span th:text="${flight.getArriving_at()}"></span>)
-                            </div>
-                        </div>
-                        <div class="flex3 w3-display-container">
-                            <div class="w3-text-red" style="height: 75%;display: flex;justify-content: center;align-items: center;font-size: 17px;"><span th:text="${flight.getFee_flight()}"></span> VND</div>
-                            <a th:href="'/flights/takeFlight/'+${flight.getFlightID()}+'&'+${plane.getPlaneID()}" class="w3-button w3-red w3-display-bottommiddle" style="margin-bottom: 10px;">Select</a>
                         </div>
                     </div>
-                </div>
+                </th:block>
             </th:block>
-        </th:block>
+        </div>
+        <nav aria-label="Page navigation example" class="w3-center">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" th:href="'/flights/search/v2/page/'+${pageNum}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <th:block th:each="i : ${#numbers.sequence(1,session.totalPages)}">
+                            <li class="page-item"><a th:href="'/flights/search/v1/page/'+${i}">[[${i}]]</a></li>
+                </th:block>
+                <li class="page-item">
+                    <a class="page-link" th:href="'/flights/search/v2/page/'+${pageNum}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
+
 </div>
 <button style="background: none;" class="w3-text-dark-grey" id="btn-scroll" onclick="ontop()"><i class='fa fa-angle-double-up'></i></button>
 <script>

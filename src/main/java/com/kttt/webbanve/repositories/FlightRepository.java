@@ -9,7 +9,7 @@ import java.util.List;
 public interface FlightRepository extends JpaRepository<Flight, Integer> {
 
     @Query("SELECT f FROM Flight f WHERE " +
-            "f.departing_from LIKE CONCAT('%',:query, '%') " +
-            "Or f.arriving_at LIKE CONCAT('%',:query, '%')")
+            "f.departingFrom LIKE CONCAT('%',:query, '%') " +
+            "Or f.arrivingAt LIKE CONCAT('%',:query, '%')")
     List<Flight> searchFlights(String query);
 }
