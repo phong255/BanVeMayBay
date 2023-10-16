@@ -13,11 +13,11 @@ import java.nio.file.Paths;
 public class Barcode {
     public void create_bar_code(String barcode){
         try{
-            String path = FileSystems.getDefault().getPath(new String("./")).toAbsolutePath().getParent() + "\\src\\main\\resources\\static\\barcodes\\" + barcode + ".jpg";
+            String path = FileSystems.getDefault().getPath(new String("./")).toAbsolutePath().getParent() + "\\src\\main\\resources\\static\\barcodes\\" + barcode + ".png";
             Code128Writer writer = new Code128Writer();
 
             BitMatrix matrix = writer.encode(barcode, BarcodeFormat.CODE_128,500,200);
-            MatrixToImageWriter.writeToPath(matrix,"jpg", Paths.get(path));
+            MatrixToImageWriter.writeToPath(matrix,"png", Paths.get(path));
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -25,10 +25,10 @@ public class Barcode {
     }
     public void create_qr_code(String qrcode){
         try{
-            String path = FileSystems.getDefault().getPath(new String("./")).toAbsolutePath().getParent() + "\\src\\main\\resources\\static\\qrcodes\\" + qrcode + ".jpg";
+            String path = FileSystems.getDefault().getPath(new String("./")).toAbsolutePath().getParent() + "\\src\\main\\resources\\static\\qrcodes\\" + qrcode + ".png";
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
             BitMatrix matrix = qrCodeWriter.encode(qrcode,BarcodeFormat.QR_CODE,400,400);
-            MatrixToImageWriter.writeToPath(matrix,"jpg",Paths.get(path));
+            MatrixToImageWriter.writeToPath(matrix,"png",Paths.get(path));
         }
         catch (Exception e){
             System.out.println(e.getMessage());

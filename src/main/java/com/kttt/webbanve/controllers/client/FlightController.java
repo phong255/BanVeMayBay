@@ -1,13 +1,10 @@
 package com.kttt.webbanve.controllers.client;
 
-import com.itextpdf.text.DocumentException;
 import com.kttt.webbanve.models.*;
 import com.kttt.webbanve.models.supportModels.FlightSelected;
 import com.kttt.webbanve.repositories.*;
 import com.kttt.webbanve.services.*;
-import com.kttt.webbanve.services.PdfService.AddImage;
-import com.kttt.webbanve.services.PdfService.GeneratePdf;
-import jakarta.mail.MessagingException;
+import com.kttt.webbanve.services.PdfService.GeneratePdfService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 @Controller
@@ -49,9 +45,7 @@ public class FlightController {
     @Autowired
     SpringTemplateEngine springTemplateEngine;
     @Autowired
-    GeneratePdf generatePdf;
-    @Autowired
-    AddImage addImage;
+    GeneratePdfService generatePdfService;
     @Autowired
     DataMapper mapper;
     @Autowired
@@ -452,6 +446,7 @@ public class FlightController {
         if(dem == flightSelecteds.size())
             model.addAttribute("error","Enough seat!");
         request.getSession().setAttribute("flightSelected",flightSelecteds);
+        model.addAttribute("seatPo",sid);
         model.addAttribute("pageTitle","Select seat");
         return "selectSeat";
     }
@@ -512,7 +507,7 @@ public class FlightController {
             @RequestParam("vnp_ResponseCode") String responseCode,
             Model model,
             HttpServletRequest request
-    ) throws IOException, MessagingException, DocumentException {
+    ) throws Exception {
         if(responseCode.equals("00")){
 
             ArrayList<FlightSelected> flightSelecteds = (ArrayList<FlightSelected>) request.getSession().getAttribute("flightSelected");
@@ -527,8 +522,8 @@ public class FlightController {
             String processedHtml = "";
             Context dataContext = mapper.setData(order,tickets);
             processedHtml = springTemplateEngine.process("orderDetail",dataContext);
-            generatePdf.htmlToPdf(processedHtml,order.getQrCode());
-//            addImage.insertQrOrder(order.getQrCode());
+            generatePdfService.htmlToPdf(processedHtml,order.getQrCode());
+            generatePdfService.addImgToPDF(order.getQrCode());
             mss.sendMailWithAttachment(order.getCustomer().getEmail(),"Cảm ơn bạn đã tin tưởng đặt vé tại đại lý GOGO !\nXem chi tiết đơn hàng phía dưới.","Chi tiết đơn hàng",order.getQrCode());
             model.addAttribute("order",order);
             model.addAttribute("totalBill",totalBill);
@@ -537,6 +532,12 @@ public class FlightController {
             return "paySuccess";
         }
         else{
+            ArrayList<FlightSelected> flightSelecteds = (ArrayList<FlightSelected>) request.getSession().getAttribute("flightSelected");
+            for(FlightSelected f : flightSelecteds){
+                Seat seat = f.getSeat();
+                seat.setStatus(0);
+                seatRepositoriesr.save(seat);
+            }
             model.addAttribute("pageTitle","Payment");
             return "redirect:/flights/displayPayment";
         }

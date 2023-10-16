@@ -47,7 +47,7 @@ public class ExceptionController implements ErrorController {
                 errorPage = "error/500";
                 log.error("Error 500");
                 Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
-                log.error(exception.getMessage(),exception);
+                log.error(exception.getStackTrace().toString(),exception);
             }
         }
         model.addAttribute("pageTitle",pageTitle);

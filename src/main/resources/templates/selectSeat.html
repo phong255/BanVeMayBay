@@ -45,6 +45,8 @@
                                                 $("#" + [[${seat.getSeatID()}]]).css("color","#f44336");
                                             if([[${seat.getStatus()}]] == 2)
                                                 $("#" + [[${seat.getSeatID()}]]).css("color","#ffc107");
+                                            if([[${seat.getSeatID()}]] == [[${seatPo}]])
+                                                $("#" + [[${seat.getSeatID()}]]).css("color","#2196F3");
                                         });
                                     });
                                 </script>

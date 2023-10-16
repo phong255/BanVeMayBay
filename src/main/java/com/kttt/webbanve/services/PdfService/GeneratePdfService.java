@@ -6,14 +6,17 @@ import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
 import com.itextpdf.io.source.ByteArrayOutputStream;
 import com.itextpdf.kernel.pdf.PdfWriter;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.stereotype.Service;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.nio.file.FileSystems;
 
 
 @Service
-public class GeneratePdf {
+public class GeneratePdfService {
     public void htmlToPdf(String processedHtml,String order) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         PdfWriter pdfWriter = new PdfWriter(byteArrayOutputStream);
@@ -28,5 +31,18 @@ public class GeneratePdf {
         byteArrayOutputStream.flush();
         fout.close();
     }
-
+    public void addImgToPDF(String qrcode) throws Exception{
+        String pathImg = FileSystems.getDefault().getPath(new String("./")).toAbsolutePath().getParent() + "\\src\\main\\resources\\static\\qrcodes\\" + qrcode + ".png";
+        String pathPdf = FileSystems.getDefault().getPath(new String("./")).toAbsolutePath().getParent() + "\\src\\main\\resources\\static\\PdfOrders\\" + qrcode + ".pdf";
+        File filePdf = new File(pathPdf);
+        PDDocument doc = new PDDocument().load(filePdf);
+        PDPage page = new PDPage();
+        doc.addPage(page);
+        PDImageXObject image = PDImageXObject.createFromFile(pathImg,doc);
+        PDPageContentStream contents = new PDPageContentStream(doc,page);
+        contents.drawImage(image,150f,300f,100,100);
+        contents.close();
+        doc.save(filePdf);
+        doc.close();
+    }
 }

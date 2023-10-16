@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" th:href="@{https://www.w3schools.com/w3css/4/w3.css}">
-    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{../static/library/w3.css}">
+    <link rel="stylesheet" th:href="@{../static/library/font-awesome_6.4.2_css_all.min.css}">
     <title>pdf</title>
 </head>
 <body>
@@ -40,10 +40,10 @@
                     <th>ĐẾN</th>
                 </tr>
                 <tr>
-                    <td><span th:text="${ticket.getFlight().getDate_flight()}"></span> </td>
+                    <td><span th:text="${ticket.getFlight().getDateFlight()}"></span> </td>
                     <td><span th:text="${ticket.getSeat().getPlane().getAirlineCompany().getAirline_name()}"></span></td>
-                    <td><span th:text="${ticket.getFlight().getDeparting_from()}"></span> - <span th:text="${ticket.getFlight().getFlight_time()}"></span></td>
-                    <td><span th:text="${ticket.getFlight().getArriving_at()}"></span> - <span th:text="${ticket.getFlight().getDeparture_time()}"></span></td>
+                    <td><span th:text="${ticket.getFlight().getDepartingFrom()}"></span> - <span th:text="${ticket.getFlight().getFlightTime()}"></span></td>
+                    <td><span th:text="${ticket.getFlight().getArrivingAt()}"></span> - <span th:text="${ticket.getFlight().getDepartureTime()}"></span></td>
                 </tr>
             </table>
         </div>
