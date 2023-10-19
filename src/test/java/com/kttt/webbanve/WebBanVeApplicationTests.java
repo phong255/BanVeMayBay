@@ -14,6 +14,7 @@ class WebBanVeApplicationTests {
 	GeneratePdfService generatePdfService;
 	@Test
 	void contextLoads() throws Exception {
+		generatePdfService.addImgToPDF("HD550121126070");
     }
 
 }

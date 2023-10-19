@@ -39,8 +39,8 @@ public class GeneratePdfService {
         PDPage page = new PDPage();
         doc.addPage(page);
         PDImageXObject image = PDImageXObject.createFromFile(pathImg,doc);
-        PDPageContentStream contents = new PDPageContentStream(doc,page);
-        contents.drawImage(image,150f,300f,100,100);
+        PDPageContentStream contents  = new PDPageContentStream(doc,page);
+        contents.drawImage(image,150f,300f,300,300);
         contents.close();
         doc.save(filePdf);
         doc.close();
