@@ -8,14 +8,15 @@ import com.kttt.webbanve.models.supportModels.PayForm;
 import com.kttt.webbanve.onlinePay.config.Config;
 import com.kttt.webbanve.repositories.*;
 import com.kttt.webbanve.security.configuration.Barcode;
-import com.kttt.webbanve.services.CustomerServiceImpl;
-import com.kttt.webbanve.services.FlightServiceImpl;
+import com.kttt.webbanve.services.*;
+import com.kttt.webbanve.services.GeneratePdfService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -30,7 +31,7 @@ import java.util.*;
 public class PayController {
 
     @Autowired
-    FlightServiceImpl flightService;
+    FlightService flightService;
     @Autowired
     SeatCategoryRepositories sr;
     @Autowired
@@ -49,11 +50,24 @@ public class PayController {
     OrderRepositories or;
     @Autowired
     TicketRepositories tr;
+    @Autowired
+    TicketService ticketService;
+    @Autowired
+    MailSenderService mailSenderService;
+    @Autowired
+    GeneratePdfService generatePdfService;
+    @Autowired
+    private OrderInfoService orderInfoService;
 
     @PostMapping(path = "/create-payment")
-    public String createPayment(HttpServletRequest request,PayForm cus) throws UnsupportedEncodingException {
+    public String createPayment(HttpServletRequest request, PayForm cus, Model model) throws UnsupportedEncodingException {
         Customer customer = new Customer();
         Barcode makeBarcode = new Barcode();
+        if(cus.getFullname() == null || cus.getPhone() == null || cus.getAddress() == null || cus.getEmail() == null || cus.getCitizenIdentification() == null){
+            model.addAttribute("pageTitle","Payment");
+            model.addAttribute("error","Fill all blank!");
+            return "payment";
+        }
         String fullname = cus.getFullname();
         String email = cus.getEmail();
         String phone = cus.getPhone();
@@ -94,7 +108,7 @@ public class PayController {
                 tickets.add(ticket_after);
                 makeBarcode.create_bar_code(barCodeTicket.toUpperCase());
             }
-            makeBarcode.create_qr_code(order_after.getQrCode());
+            makeBarcode.create_qr_code(Base64.getEncoder().encodeToString(order_after.getQrCode().getBytes()));
             request.getSession().setAttribute("tickets",tickets);
 
 //======================================================================================================================
@@ -156,4 +170,23 @@ public class PayController {
             return paymentUrl;
     }
 
+    @PostMapping("/ticket/export")
+    public OrderInfo export(String qrcodeEncoded){
+        byte[] qrcode = Base64.getDecoder().decode(qrcodeEncoded);
+        OrderInfo orderInfo = orderInfoService.getOrderByQrcode(new String(qrcode));
+        if(orderInfo == null)
+            return null;
+        return orderInfo;
+    }
+    @PostMapping("/ticket/qrreader/success")
+    public String readerSuccess(@RequestBody OrderInfo orderInfo) throws IOException, MessagingException {
+        if(orderInfo == null)
+            return "/admin/ticket/qrreader/fail";
+        ArrayList<Ticket> tickets = ticketService.getTicketsByOrderID(orderInfo.getOrderID());
+        generatePdfService.exportTicket(tickets);
+        String body = "Xin chao "+orderInfo.getCustomer().getFullname()+"\n\tVé máy bay của bạn đã được tạo thành công!\n\t Tệp đính kèm phía dưới.";
+        String subject = "GOGO - EXPORT PDF TICKET";
+        mailSenderService.sendMailWithAttachment_Ticket(orderInfo.getCustomer().getEmail(),body,subject,tickets);
+        return "/admin/ticket/qrreader/success";
+    }
 }

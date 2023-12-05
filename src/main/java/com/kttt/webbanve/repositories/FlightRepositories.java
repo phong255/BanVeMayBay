@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.ArrayList;
+
 public interface FlightRepositories extends PagingAndSortingRepository<Flight, Integer> {
     public Page<Flight> findAllByDateFlightAndDepartingFromAndArrivingAt(String date_flight,String departing_from,String arriving_at, Pageable pageable);
 

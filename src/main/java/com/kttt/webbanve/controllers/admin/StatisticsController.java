@@ -32,7 +32,7 @@ public class StatisticsController {
                                              @RequestParam(defaultValue = "5") int numberOfYear,
                                              HttpServletRequest request) {
         HttpSession session = request.getSession();
-        if(session.getAttribute("role")=="1" || session.getAttribute("role")==null){
+        if(session.getAttribute("role")==null){
             return "admin/loginAdmin";
         }
 

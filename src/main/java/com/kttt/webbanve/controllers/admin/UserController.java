@@ -3,6 +3,7 @@ package com.kttt.webbanve.controllers.admin;
 import com.kttt.webbanve.models.Flight;
 import com.kttt.webbanve.models.User;
 import com.kttt.webbanve.services.UserService;
+import jakarta.mail.Session;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 @Controller
 public class UserController {
@@ -21,7 +25,7 @@ public class UserController {
     @GetMapping("/admin/userList")
     public String getFirstPage(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        if(session.getAttribute("role")=="1" || session.getAttribute("role")==null){
+        if(session.getAttribute("role")==null){
             return "admin/loginAdmin";
         }
         return getAllUser(model, request,1, 5, "userID", "asc");
@@ -94,8 +98,37 @@ public class UserController {
     }
 
     @PostMapping("admin/deleteUser/{userId}")
-    public String deleteFlight(@PathVariable int userId) {
+    public String deleteUser(@PathVariable int userId, HttpServletRequest request) {
+        HttpSession
+                session = request.getSession();
+        if(session.getAttribute("role")==null || (int)session.getAttribute("role") == 0){
+            return "admin/loginAdmin";
+        }
         userService.deleteById(userId);
         return "redirect:/admin/userList";
+    }
+
+    @GetMapping("/admin/addUser")
+    public String addUserForm(){
+        return "/admin/user/addUser";
+    }
+    @PostMapping("/admin/addUser/save")
+    public String addUser(HttpServletRequest request, RedirectAttributes ra){
+        if(userService.getAccount(request.getParameter("username").trim()) != null){
+            return "redirect:/admin/userList";
+        }
+        try{
+            User user = new User();
+            user.setUsername(request.getParameter("username"));
+            user.setPassword(request.getParameter("password"));
+            user.setRole(Integer.parseInt(request.getParameter("role")));
+            userService.addAccount(user);
+            ra.addFlashAttribute("success","Add success");
+            return "redirect:/admin/addUser";
+        }catch (Exception e){
+            e.printStackTrace();
+            ra.addFlashAttribute("error",e.getMessage());
+            return "redirect:/admin/addUser";
+        }
     }
 }

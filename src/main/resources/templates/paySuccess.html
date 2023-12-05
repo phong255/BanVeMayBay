@@ -28,8 +28,7 @@
         })
     </script>
 </div>
-<div  class="w3-content w3-margin-top" style="max-width:1400px;min-height: 741px;">
-
+<div  class="w3-content w3-margin-top" style="max-width:1400px;">
     <!-- The Grid -->
     <div class="w3-row-padding w3-card w3-display-container w3-center w3-white">
         <img class="w3-margin-top" style="width: 300px;" src="/w3images/thanks.png" alt="thank you">
@@ -38,7 +37,7 @@
             <p class="w3-margin-top w3-text-green" style="font-size: 20px;">Booking successfully order : <span class="w3-text-blue" th:text="${order.getQrCode()}"></span> </p>
         </div>
         <div>
-            <p class="w3-text-green" style="font-size: 20px;">Total bill <span class="w3-text-blue" th:text="${order.getTotal_cost()}"></span> </p>
+            <p class="w3-text-green" style="font-size: 20px;">Total bill <span class="w3-text-blue" th:text="${#numbers.formatCurrency(order.getTotal_cost())}"></span> </p>
         </div>
         <div>
             <a class="w3-left" th:href="@{/}"><i class="fa fa-solid fa-arrow-left-to-line"></i>Back to homepage</a>

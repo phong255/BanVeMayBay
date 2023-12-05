@@ -8,10 +8,11 @@
 
 <!-- Page Container -->
 <div  class="w3-content w3-margin-top" style="max-width:1400px;min-height: 741px;" th:if="${session.flightSelected}">
-    <div class="w3-container w3-card w3-white w3-margin-bottom">
+    <div class="w3-container w3-card w3-white w3-margin-bottom" style="display: flex;justify-content: space-around;">
         <p class="w3-margin-top"><i style="font-size: 40px;" class="fa fas fa-couch w3-text-red"></i> : The place is not empty</p>
         <p class="w3-margin-top "><i style="font-size: 40px;" class="fa fas fa-couch w3-text-grey"></i> : Seats Available</p>
         <p class="w3-margin-top "><i style="font-size: 40px;" class="fa fas fa-couch w3-text-amber"></i> : Waiting to be paid</p>
+        <p class="w3-margin-top "><i style="font-size: 40px;color: #2196F3" class="fa fas fa-couch"></i> : Selecting</p>
     </div>
     <div th:if="${error}">
         <script>
@@ -23,30 +24,28 @@
             })
         </script>
     </div>
-
     <!-- The Grid -->
     <div class="w3-row-padding">
-
         <!-- Right Column -->
         <div class="w3-twothird w3-container">
             <th:block th:each="flight : ${session.flightSelected}">
-                <h3><span th:text="${flight.getFlight().getDepartingFrom()}"></span>    -    <span th:text="${flight.getFlight().getArrivingAt()}"></span>| <span th:text="${session.seatClass.categoryName}"></span>     -    <span th:text="${flight.getCustomer().getFullname()}"></span></h3>
+                <h3><span th:text="${flight.getFlight().getDepartingFrom()}"></span>    -    <span th:text="${flight.getFlight().getArrivingAt()}"></span> | <span th:text="${session.seatClass.categoryName}"></span> | <span th:text="${flight.customer.getFullname()}"></span></h3>
                 <div class="w3-panel w3-pale-red w3-leftbar w3-rightbar w3-border-red w3-row-padding w3-col-" style="width: 80%;">
                     <th:block th:each="seat : ${flight.getSeats()}">
                         <a th:href="'/flights/saveInfor/'+${seat.getSeatID()}+'&'+${flight.getFlight().getFlightID()}+'&'+${flight.getCustomer().getEmail()}" style="text-decoration: none;">
                             <div class="w3-quarter w3-center" style="padding: 10px;">
                                 <span style="position: relative;left: 42px;color: white;font-size: 15px;top: -14px;" th:text="${seat.getPosition()}"></span>
-                                <i style="font-size: 40px;" class="fa fas fa-couch" th:id="${seat.getSeatID()}"></i>
+                                <i style="font-size: 40px;" th:class="'fa fas fa-couch cl' + ${seat.getSeatID()}"></i>
                                 <input type="hidden" th:name="${seat.getSeatID()}">
                                 <script th:inline="javascript">
                                     $(document).ready(function (){
                                         $( window ).on("load", function() {
                                             if([[${seat.getStatus()}]] == 1)
-                                                $("#" + [[${seat.getSeatID()}]]).css("color","#f44336");
+                                                $(".cl" + [[${seat.getSeatID()}]]).css("color","#f44336");
                                             if([[${seat.getStatus()}]] == 2)
-                                                $("#" + [[${seat.getSeatID()}]]).css("color","#ffc107");
-                                            if([[${seat.getSeatID()}]] == [[${seatPo}]])
-                                                $("#" + [[${seat.getSeatID()}]]).css("color","#2196F3");
+                                                $(".cl" + [[${seat.getSeatID()}]]).css("color","#ffc107");
+                                            if([[${seat.getStatus()}]] == 3)
+                                                $(".cl" + [[${seat.getSeatID()}]]).css("color","#2196F3");
                                         });
                                     });
                                 </script>
@@ -63,7 +62,7 @@
             <th:block th:each="fs : ${session.flightSelected}">
                 <th:block th:each = "plane : ${fs.getFlight().getPlanes()}">
                     <div class="w3-container w3-card w3-white w3-margin-bottom">
-                        <p class="w3-panel w3-pale-blue w3-leftbar w3-rightbar w3-border-blue "><span th:text="${fs.getFlight().getDepartingFrom()}"></span>     <i class="fa fa-solid fa-plane"></i>     <span th:text="${fs.getFlight().getArrivingAt()}"></span> <span class="w3-right">VND</span><span th:text="${#numbers.formatCurrency(fs.getFlight().getFeeFlight()*session.adults + fs.getFlight().getFeeFlight()*session.child*0.8)}" class="w3-right"></span> </p>
+                        <p class="w3-panel w3-pale-blue w3-leftbar w3-rightbar w3-border-blue "><span th:text="${fs.getFlight().getDepartingFrom()}"></span>     <i class="fa fa-solid fa-plane"></i>     <span th:text="${fs.getFlight().getArrivingAt()}"></span> <span class="w3-right">VND</span><span th:text="${#numbers.formatCurrency(fs.getFlight().getFeeFlight())}" class="w3-right"></span> </p>
                         <p class="w3-panel w3-pale-khaki w3-leftbar w3-rightbar w3-border-khaki ">Departure <span th:text="${fs.getFlight().getDepartureTime()}"></span>, <span th:text="${fs.getFlight().getDateFlight()}"></span></p>
                         <h6 class="w3-panel w3-leftbar w3-rightbar "><span th:text="${fs.getFlight().getDepartingFrom()}"></span>     <i class="fa fa-solid fa-plane"></i>     <span th:text="${fs.getFlight().getArrivingAt()}"></span></h6>
                         <p>Travel time: <span th:text="${fs.getFlight().getTravelTime()}"></span>/Direct Flight</p>

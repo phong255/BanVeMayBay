@@ -27,8 +27,8 @@ public class ExceptionController implements ErrorController {
                 pageTitle = "Page Not Found";
                 errorPage = "error/404";
                 log.error("Error 404");
-                Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
-                log.error(exception.getMessage(),exception);
+//                Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+//                log.error(exception.getMessage(),exception);
             } else if(statusCode == HttpStatus.FORBIDDEN.value()){
                 pageTitle = "Internal Server error";
                 errorPage = "error/403";
@@ -47,7 +47,10 @@ public class ExceptionController implements ErrorController {
                 errorPage = "error/500";
                 log.error("Error 500");
                 Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
-                log.error(exception.getStackTrace().toString(),exception);
+                if(exception == null)
+                    log.info("Have no exception.");
+                else
+                    log.error(exception.getStackTrace().toString(),exception);
             }
         }
         model.addAttribute("pageTitle",pageTitle);

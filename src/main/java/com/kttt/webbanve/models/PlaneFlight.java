@@ -1,7 +1,13 @@
 package com.kttt.webbanve.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "plane_flight")
 public class PlaneFlight {

@@ -1,8 +1,10 @@
 package com.kttt.webbanve.services;
 
+import com.kttt.webbanve.models.OrderInfo;
 import com.kttt.webbanve.payload.CostStatistics;
 import com.kttt.webbanve.payload.CostStatisticsByQuarter;
 import com.kttt.webbanve.repositories.OrderInfoRepository;
+import com.kttt.webbanve.repositories.OrderRepositories;
 import com.kttt.webbanve.repositories.StatisticsRepoCustomImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,12 +13,15 @@ import java.util.List;
 
 @Service
 public class OrderInfoServiceImpl implements OrderInfoService{
+
+    private OrderRepositories orderRepositories;
     private OrderInfoRepository orderInfoRepository;
     private StatisticsRepoCustomImpl srci;
 
     @Autowired
-    public OrderInfoServiceImpl(OrderInfoRepository orderInfoRepository, StatisticsRepoCustomImpl srci) {
+    public OrderInfoServiceImpl(OrderInfoRepository orderInfoRepository, StatisticsRepoCustomImpl srci, OrderRepositories orderRepositories) {
         this.orderInfoRepository = orderInfoRepository;
+        this.orderRepositories = orderRepositories;
         this.srci = srci;
     }
 
@@ -25,6 +30,11 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 //        List<OrderInfo> orderInfos = orderInfoRepository.findAll();
 //        return orderInfos.stream().map(this::mapToDto).toList();
 //    }
+
+    @Override
+    public OrderInfo getOrderByQrcode(String Qrcode) {
+        return orderRepositories.getOrderInfoByQrCode(Qrcode);
+    }
 
     @Override
     public List<CostStatistics> statisticsCostByMonth() {
@@ -58,4 +68,5 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 //        ticketDto.setFlightId(ticket.getFlightId());
 //        return ticketDto;
 //    }
+
 }

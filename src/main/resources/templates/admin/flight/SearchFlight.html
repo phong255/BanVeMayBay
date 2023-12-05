@@ -66,11 +66,11 @@
     <th:block th:each="flight : ${flights}">
       <tr>
         <td th:utext="${flight.getFlightID()}">..</td>
-        <td th:utext="${flight.getDeparting_from()}">..</td>
-        <td th:utext="${flight.getArriving_at()}">..</td>
-        <td th:utext="${flight.getFormatTime(flight.getFlight_time())}">..</td>
-        <td th:utext="${flight.getFormatTime(flight.getDeparture_time())}">..</td>
-        <td th:utext="${flight.getFormatFeeFlight(flight.getFee_flight())}">..</td>
+        <td th:utext="${flight.getDepartingFrom()}">..</td>
+        <td th:utext="${flight.getArrivingAt()}">..</td>
+        <td th:utext="${flight.getFormatTime(flight.getFlightTime())}">..</td>
+        <td th:utext="${flight.getFormatTime(flight.getDepartureTime())}">..</td>
+        <td th:utext="${flight.getFormatFeeFlight(flight.getFeeFlight())}">..</td>
 
         <td style="display: flex">
           <button class="update">

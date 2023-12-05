@@ -29,7 +29,7 @@ public class FlightAdminController {
     @GetMapping("/admin/flightList")
     public String getFirstPage(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        if(session.getAttribute("role")=="1" || session.getAttribute("role")==null){
+        if(session.getAttribute("role")==null){
             return "admin/loginAdmin";
         }
         return getAllFlights(model, request,1, 5, "flightID", "asc");

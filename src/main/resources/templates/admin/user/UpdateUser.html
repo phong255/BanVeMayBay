@@ -41,16 +41,16 @@
 <!--    <input type="number" name="role" placeholder="role" th:value="${user.getRole()}"/>-->
     <select name="role">
       <option th:value="${user.getRole()}" th:text="${user.getRole()}"></option>
-      <option th:value="1" th:text="1"></option>
-      <option th:value="2" th:text="2"></option>
-      <option th:value="3" th:text="3"></option>
+      <option th:value="0" th:text="USER"></option>
+      <option th:value="1" th:text="EMPLOYEE"></option>
+      <option th:value="2" th:text="MANAGER"></option>
     </select>
     <p th:if="${role}" class="error">[[${role}]]</p>
     <br/>
     <br/>
     <button type="submit" value="add">update</button>
   </form>
-  <a href="/admin/flightList">Flight list</a>
+  <a href="/admin/userList">User list</a>
 </div>
 </body>
 </html>

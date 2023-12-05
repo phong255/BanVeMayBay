@@ -22,7 +22,7 @@ public class SeatCategoryController {
     @GetMapping("/admin/seatCategoryList")
     public String getFirstPage(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        if(session.getAttribute("role")=="1" || session.getAttribute("role")==null){
+        if(session.getAttribute("role")==null || (int)session.getAttribute("role") == 0){
             return "admin/loginAdmin";
         }
         return getAllSeatCategory(model, request,1, 5, "seatCategoryID", "asc");

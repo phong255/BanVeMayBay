@@ -1,8 +1,10 @@
 package com.kttt.webbanve.services;
 
 import com.kttt.webbanve.models.Flight;
+import com.kttt.webbanve.models.PlaneFlight;
 import com.kttt.webbanve.repositories.FlightRepositories;
 import com.kttt.webbanve.repositories.FlightRepository;
+import com.kttt.webbanve.repositories.PlaneFlightRepositories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +21,10 @@ import java.util.Optional;
 public class FlightServiceImpl implements FlightService{
     @Autowired
     FlightRepositories fl;
-
+    @Autowired
     private FlightRepository flightRepository;
-
+    @Autowired
+    PlaneFlightRepositories planeFlightRepositories;
     @Autowired
     public FlightServiceImpl(FlightRepository flightRepository) {
         this.flightRepository = flightRepository;
@@ -71,5 +75,15 @@ public class FlightServiceImpl implements FlightService{
 
     public Flight getFlightByID(int fid){
         return fl.getFlightByFlightID(fid);
+    }
+
+    @Override
+    public ArrayList<Flight> getFlightsByPlane(int planeID) {
+        ArrayList< PlaneFlight> planeFlights = planeFlightRepositories.findPlaneFlightsByPlaneID(planeID);
+        ArrayList<Flight> flights = new ArrayList<>();
+        for(PlaneFlight pl : planeFlights){
+            flights.add(fl.getFlightByFlightID(pl.getFlightID()));
+        }
+        return flights;
     }
 }

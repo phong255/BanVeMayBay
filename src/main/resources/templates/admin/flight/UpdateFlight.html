@@ -30,23 +30,23 @@
   <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Update flight</h1>
   <form style="padding-left: 20px;" th:method="POST" th:action="@{/admin/updateFlight/{id}(id=${flight.getFlightID()})}">
     <p class="paddingName">departingForm</p>
-    <input type="text" name="departingForm" placeholder="departingForm" th:value="${flight.getDeparting_from()}"/>
+    <input type="text" name="departingForm" placeholder="departingForm" th:value="${flight.getDepartingFrom()}"/>
     <p th:if="${departingForm}" class="error">[[${departingForm}]]</p>
     <br/>
     <p class="paddingName">arrivingAt</p>
-    <input type="text" name="arrivingAt" placeholder="arrivingAt" th:value="${flight.getArriving_at()}"/>
+    <input type="text" name="arrivingAt" placeholder="arrivingAt" th:value="${flight.getArrivingAt()}"/>
     <p th:if="${arrivingAt}" class="error">[[${arrivingAt}]]</p>
     <br/>
     <p class="paddingName">flightTime</p>
-    <input type="number" value="0" name="flightTime" placeholder="flightTime" th:value="${flight.getFlight_time()}"/>
+    <input type="number" value="0" name="flightTime" placeholder="flightTime" th:value="${flight.getFlightTime()}"/>
     <p th:if="${flightTime}" class="error">[[${flightTime}]]</p>
     <br/>
     <p class="paddingName">departureTime</p>
-    <input type="number" value="0" name="departureTime" placeholder="departureTime" th:value="${flight.getDeparture_time()}"/>
+    <input type="number" value="0" name="departureTime" placeholder="departureTime" th:value="${flight.getDepartureTime()}"/>
     <p th:if="${departureTime}" class="error">[[${departureTime}]]</p>
     <br/>
     <p class="paddingName">feeFlight</p>
-    <input type="number" value="0" name="feeFlightx" placeholder="feeFlight" th:value="${flight.getFee_flight()}">
+    <input type="number" value="0" name="feeFlightx" placeholder="feeFlight" th:value="${flight.getFeeFlight()}">
     <p th:if="${feeFlight}" class="error">[[${feeFlight}]]</p>
     <br/>
     <br/>

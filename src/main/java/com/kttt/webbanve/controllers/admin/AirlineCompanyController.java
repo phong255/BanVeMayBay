@@ -5,6 +5,7 @@ import com.kttt.webbanve.exception.AirlineCompanyNotFoundException;
 import com.kttt.webbanve.models.AirlineCompany;
 import com.kttt.webbanve.services.AirlineCompanyService;
 import com.kttt.webbanve.services.AirlineCompanyServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -28,8 +29,8 @@ public class AirlineCompanyController {
     }
 
     @GetMapping("/airlineCompanies")
-    public String listFirstPage(Model model) {
-        return listByPage(model, 1, "airlineID", "asc", null);
+    public String listFirstPage(Model model,HttpServletRequest request) {
+        return listByPage(model, 1, "airlineID", "asc", null,request);
     }
 
     @GetMapping("/airlineCompanies/page/{pageNum}")
@@ -37,7 +38,11 @@ public class AirlineCompanyController {
                              @PathVariable(name = "pageNum") int pageNum,
                              @Param("sortField") String sortField,
                              @Param("sortDir") String sortDir,
-                             @Param("keyword") String keyword) {
+                             @Param("keyword") String keyword,
+                             HttpServletRequest request) {
+        if(request.getSession().getAttribute("role")==null){
+            return "admin/loginAdmin";
+        }
         Page<AirlineCompany> page = as.listByPage(pageNum, sortField, sortDir, keyword);
         List<AirlineCompany> listAirlineCompany =page.getContent();
 

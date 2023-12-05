@@ -2,6 +2,8 @@ package com.kttt.webbanve.services;
 
 import com.kttt.webbanve.models.Flight;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 
@@ -16,4 +18,5 @@ public interface FlightService {
     public List<Flight> getAllFlights();
     public List<Flight> findFlightByForm();
     public Flight getFlightByID(int fid);
+    public ArrayList<Flight> getFlightsByPlane(int planeID);
 }

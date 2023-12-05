@@ -1,29 +1,26 @@
 package com.kttt.webbanve.controllers.admin;
 
 import com.kttt.webbanve.models.Ticket;
-import com.kttt.webbanve.payload.TicketDto;
-import com.kttt.webbanve.repositories.FlightRepository;
-import com.kttt.webbanve.repositories.TicketRepository;
-import com.kttt.webbanve.services.AirlineCompanyServiceImpl;
+import com.kttt.webbanve.services.OrderInfoService;
+import com.kttt.webbanve.services.GeneratePdfService;
 import com.kttt.webbanve.services.TicketService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Optional;
-
 @Controller
 public class TicketController {
+    private GeneratePdfService generatePdfService;
+
     private TicketService ticketService;
+    @Autowired
+    private OrderInfoService orderInfoService;
 
     public TicketController(TicketService ticketService) {
         this.ticketService = ticketService;
@@ -32,7 +29,7 @@ public class TicketController {
     @GetMapping("/admin/ticketList")
     public String getFirstPage(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        if(session.getAttribute("role")=="1" || session.getAttribute("role")==null){
+        if(session.getAttribute("role")==null){
             return "admin/loginAdmin";
         }
         return getAllTicket(model, request,1, 5, "ticketID", "asc");
@@ -76,6 +73,19 @@ public class TicketController {
             return "redirect:/admin/ticketList";
         }
     }
+    @GetMapping("/admin/ticket/qrreader")
+    public String reader(){
+        return "admin/QrReader";
+    }
+    @GetMapping("/admin/ticket/qrreader/success")
+    public String readersucc(Model model){
+        model.addAttribute("success","Export successfully!");
+        return "admin/QrReader";
+    }
 
-
+    @GetMapping("/admin/ticket/qrreader/fail")
+    public String readerFail(Model model){
+        model.addAttribute("error","This order does not exist!");
+        return "admin/QrReader";
+    }
 }

@@ -4,7 +4,7 @@ import com.kttt.webbanve.models.*;
 import com.kttt.webbanve.models.supportModels.FlightSelected;
 import com.kttt.webbanve.repositories.*;
 import com.kttt.webbanve.services.*;
-import com.kttt.webbanve.services.PdfService.GeneratePdfService;
+import com.kttt.webbanve.services.GeneratePdfService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -108,13 +108,13 @@ public class FlightController {
         model.addAttribute("pageTitle","Flights");
         if(rd.equals("rt")){
             Page<Flight> flights1 = flightService.findFlightByForm(date_flight,departing_from,arriving_at,1);
-            Page<PlaneFlight> planeFlightPage1 = planeFlightService.getAllFlight(flights1.getContent().get(0).getFlightID(),1);
             Page<Flight> flights2 = flightService.findFlightByForm(date_return,arriving_at,departing_from,1);
-            Page<PlaneFlight> planeFlightPage2 = planeFlightService.getAllFlight(flights2.getContent().get(0).getFlightID(),1);
             if(flights1.isEmpty() || flights2.isEmpty()){
                 model.addAttribute("error","No flight can be found !");
                 return "listFlights";
             }
+            Page<PlaneFlight> planeFlightPage1 = planeFlightService.getAllFlight(flights1.getContent().get(0).getFlightID(),1);
+            Page<PlaneFlight> planeFlightPage2 = planeFlightService.getAllFlight(flights2.getContent().get(0).getFlightID(),1);
             int totalItems1 = planeFlightPage1.getNumberOfElements();
             int totalPages1 = planeFlightPage1.getTotalPages();
             int totalItems2 = planeFlightPage2.getNumberOfElements();
@@ -140,6 +140,10 @@ public class FlightController {
         }
         else{
             Page<Flight> flights = flightService.findFlightByForm(date_flight,departing_from,arriving_at,1);
+            if(flights.isEmpty()){
+                model.addAttribute("error","No flight can be found !");
+                return "listFlights";
+            }
             Page<PlaneFlight> planeFlightPage = planeFlightService.getAllFlight(flights.getContent().get(0).getFlightID(),1);
             if(planeFlightPage.getNumberOfElements() > 0)
                 request.getSession().setAttribute("planes",planeFlightService.convertToListFlight(planeFlightPage.getContent()));
@@ -329,6 +333,12 @@ public class FlightController {
 
     @GetMapping("/flights/fillInfor")
     public String goToInfor(Model model,HttpServletRequest request){
+        ArrayList<FlightSelected> flightSelecteds = (ArrayList<FlightSelected>) request.getSession().getAttribute("flightSelected");
+        if(flightSelecteds.size() < 2 && request.getSession().getAttribute("categoryTicket") != null){
+            model.addAttribute("pageTitle","Flights");
+            model.addAttribute("error","Have to select 2 flight !");
+            return "listFlights";
+        }
         model.addAttribute("pageTitle","Passenger's information");
         long quanAdults = (long)request.getSession().getAttribute("adults") + (long)request.getSession().getAttribute("child");
         ArrayList<Integer> adults = new ArrayList<>();
@@ -336,7 +346,6 @@ public class FlightController {
         SeatCategory sl = (SeatCategory) request.getSession().getAttribute("seatClass");
         long adult = (long) request.getSession().getAttribute("adults");
         long child = (long) request.getSession().getAttribute("child");
-        ArrayList<FlightSelected> flightSelecteds = (ArrayList<FlightSelected>) request.getSession().getAttribute("flightSelected");
         request.getSession().setAttribute("totalBill",(long)(totalFee(flightSelecteds)*(adult + child*0.8) + sl.getFeeCategory()*(adult + child)*flightSelecteds.size()));
         //-------------------
         for(int i=0;i<quanAdults;i++)
@@ -421,7 +430,13 @@ public class FlightController {
             model.addAttribute("pageTitle","Select seat");
             return "selectSeat";
         }
+
         for(FlightSelected f : flightSelecteds){
+            if (f.getSeat() != null && sid == f.getSeat().getSeatID()) {
+                model.addAttribute("error", "Has been selected!");
+                model.addAttribute("pageTitle","Select seat");
+                return "selectSeat";
+            }
             if(f.getSeat() != null) {
                 if (f.getFlight().getDepartingFrom().equals(flight.getDepartingFrom()) && f.getFlight().getArrivingAt().equals(flight.getArrivingAt()) && f.getCustomer().getEmail().equals(cemail)) {
                     model.addAttribute("error", "Has been selected!");
@@ -434,6 +449,7 @@ public class FlightController {
         for(FlightSelected f : flightSelecteds){
             if(f.getSeat() == null) {
                 f.setSeat(seat);
+                seat.setStatus(3);
                 f.setAirfares(f.getAirfares() + seat.getSeatCategory().getFeeCategory() + f.getFlight().getFeeFlight());
                 for (Plane p :
                         f.getFlight().getPlanes()) {
@@ -482,7 +498,7 @@ public class FlightController {
         for (FlightSelected f :
                 flightSelecteds) {
             if(f.getSeat() == null){
-                model.addAttribute("error","No seat has been selected!");
+                model.addAttribute("error","Take at least "+flightSelecteds.size()+" seats!");
                 for (Plane p :
                         f.getFlight().getPlanes()) {
                     ArrayList<Seat> seats = seatRepositoriesr.getSeatsBySeatCategory_CategoryNameAndPlane_PlaneID(sl.getCategoryName(),p.getPlaneID());
@@ -492,6 +508,9 @@ public class FlightController {
                 model.addAttribute("pageTitle","Select seat");
                 return "selectSeat";
             }
+        }
+        for (FlightSelected f :
+                flightSelecteds) {
             Seat seat = f.getSeat();
             seat.setStatus(2);
             seatRepositoriesr.save(seat);

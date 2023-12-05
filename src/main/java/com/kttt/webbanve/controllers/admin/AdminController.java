@@ -42,7 +42,7 @@ public class AdminController extends AbstractClass {
     @GetMapping("/admin")
     public String getAdminUrl(HttpServletRequest request,ModelMap modelMap){
         HttpSession session = request.getSession();
-        if(session.getAttribute("role")=="1" || session.getAttribute("role")==null){
+        if(session.getAttribute("role")==null){
             return "admin/loginAdmin";
         }
         List<Plane> planes = planeRepository.findAll();
@@ -80,12 +80,13 @@ public class AdminController extends AbstractClass {
                 redirectAttributes.addFlashAttribute("message", "Password is incorrect");
                 return "redirect:/admin/login";
             }
-            if(user.getRole()<2) {
+            if(user.getRole()<1) {
                 redirectAttributes.addFlashAttribute("message", "Accept denied");
                 return "redirect:/admin/login";
             }
-            request.getSession().setAttribute("user",user);
-            request.getSession().setAttribute("role", user.getRole());
+            if(user.getRole() == 2){
+                request.getSession().setAttribute("ROLE_ADMIN",true);
+            }
             session.setAttribute("user", user);
             session.setAttribute("username", username);
             session.setAttribute("role", user.getRole());
@@ -102,6 +103,7 @@ public class AdminController extends AbstractClass {
         session.removeAttribute("username");
         session.removeAttribute("user");
         session.removeAttribute("role");
+        session.removeAttribute("ROLE_ADMIN");
         return "redirect:/admin/login";
     }
 

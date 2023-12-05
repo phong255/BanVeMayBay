@@ -35,7 +35,7 @@ public class PlaneController extends AbstractClass {
     @GetMapping("/admin/listPlane")
     public String getFirstPage(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        if(session.getAttribute("role")=="1" || session.getAttribute("role")==null){
+        if(session.getAttribute("role")==null || (int)session.getAttribute("role") == 0){
             return "admin/loginAdmin";
         }
         return getAllPlane(model, request,1, 5, "planeID", "asc");
@@ -50,7 +50,7 @@ public class PlaneController extends AbstractClass {
                               @RequestParam(defaultValue = "ASC", required = false) String sortDir
     ) {
         HttpSession session = request.getSession();
-        if((int) session.getAttribute("role") < 2 || session.getAttribute("role")==null){
+        if(session.getAttribute("role")==null){
             return "redirect:/admin/login";
         }
         try {

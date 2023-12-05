@@ -74,7 +74,7 @@
             <th:block th:each="fs : ${session.flightSelected}">
                 <th:block th:each = "plane : ${fs.getFlight().getPlanes()}">
                     <div class="w3-container w3-card w3-white w3-margin-bottom">
-                        <p class="w3-panel w3-pale-blue w3-leftbar w3-rightbar w3-border-blue "><span th:text="${fs.getFlight().getDepartingFrom()}"></span>     <i class="fa fa-solid fa-plane"></i>     <span th:text="${fs.getFlight().getArrivingAt()}"></span> <span class="w3-right">VND</span><span th:text="${#numbers.formatCurrency(fs.getFlight().getFeeFlight()*session.adults + fs.getFlight().getFeeFlight()*session.child*0.8)}" class="w3-right"></span> </p>
+                        <p class="w3-panel w3-pale-blue w3-leftbar w3-rightbar w3-border-blue "><span th:text="${fs.getFlight().getDepartingFrom()}"></span>     <i class="fa fa-solid fa-plane"></i>     <span th:text="${fs.getFlight().getArrivingAt()}"></span> <span class="w3-right">VND</span><span th:text="${#numbers.formatCurrency(fs.getFlight().getFeeFlight())}" class="w3-right"></span> </p>
                         <p class="w3-panel w3-pale-khaki w3-leftbar w3-rightbar w3-border-khaki ">Departure <span th:text="${fs.getFlight().getDepartureTime()}"></span>, <span th:text="${fs.getFlight().getDateFlight()}"></span></p>
                         <h6 class="w3-panel w3-leftbar w3-rightbar "><span th:text="${fs.getFlight().getDepartingFrom()}"></span>     <i class="fa fa-solid fa-plane"></i>     <span th:text="${fs.getFlight().getArrivingAt()}"></span></h6>
                         <p>Travel time: <span th:text="${fs.getFlight().getTravelTime()}"></span>/Direct Flight</p>
