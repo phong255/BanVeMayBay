@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head th:replace="~{fragments::html_head}"/>
+<head th:replace="~{client/fragments::html_head}"/>
 <body class="w3-light-grey">
     <!-- Navigation Bar -->
-    <div th:replace="~{fragments:: navigationBar}"/>
+    <div th:replace="~{client/fragments:: navigationBar}"/>
 
     <!-- Page Container -->
     <div  class="w3-content w3-margin-top" style="max-width:1400px;" th:if="${customer}">
@@ -34,7 +34,7 @@
                     <div class="w3-container">
                         <ul class="nav nav-pills nav-stacked">
                             <li><a th:href="@{'/account/information/'+${session.customer.customerID}}">Account</a></li>
-                            <li><a href="#">Password & Security</a></li>
+                            <li><a th:href="@{/account/changeForm}">Password & Security</a></li>
                             <li><a th:href="@{/account/logout}">Log out</a></li>
                         </ul>
                         <hr>
@@ -158,6 +158,6 @@
 
         <!-- End Page Container -->
     </div>
-    <footer th:replace="~{fragments::footer}" />
+    <footer th:replace="~{client/fragments::footer}" />
 </body>
 </html>

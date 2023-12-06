@@ -67,7 +67,7 @@ public class FlightController {
                 request.getSession().setAttribute("totalBill",totalBill);
             }
         }
-        return "listFlights";
+        return "client/listFlights";
     }
 
     @PostMapping("/flights/search")
@@ -111,7 +111,7 @@ public class FlightController {
             Page<Flight> flights2 = flightService.findFlightByForm(date_return,arriving_at,departing_from,1);
             if(flights1.isEmpty() || flights2.isEmpty()){
                 model.addAttribute("error","No flight can be found !");
-                return "listFlights";
+                return "client/listFlights";
             }
             Page<PlaneFlight> planeFlightPage1 = planeFlightService.getAllFlight(flights1.getContent().get(0).getFlightID(),1);
             Page<PlaneFlight> planeFlightPage2 = planeFlightService.getAllFlight(flights2.getContent().get(0).getFlightID(),1);
@@ -136,13 +136,13 @@ public class FlightController {
             request.getSession().setAttribute("seatClass",sl);
             request.getSession().setAttribute("categoryTicket",2);
             model.addAttribute("pageNum",1);
-            return "listFlights";
+            return "client/listFlights";
         }
         else{
             Page<Flight> flights = flightService.findFlightByForm(date_flight,departing_from,arriving_at,1);
             if(flights.isEmpty()){
                 model.addAttribute("error","No flight can be found !");
-                return "listFlights";
+                return "client/listFlights";
             }
             Page<PlaneFlight> planeFlightPage = planeFlightService.getAllFlight(flights.getContent().get(0).getFlightID(),1);
             if(planeFlightPage.getNumberOfElements() > 0)
@@ -162,7 +162,7 @@ public class FlightController {
             request.getSession().setAttribute("seatClass",sl);
             model.addAttribute("pageNum",1);
             request.getSession().removeAttribute("categoryTicket");
-            return "listFlights";
+            return "client/listFlights";
         }
     }
 
@@ -177,7 +177,7 @@ public class FlightController {
             request.getSession().setAttribute("planes",planeFlightService.convertToListFlight(planeFlightPage.getContent()));
         model.addAttribute("pageTitle","Flights");
         model.addAttribute("pageNum",pageNumber);
-        return "listFlights";
+        return "client/listFlights";
     }
 
     @GetMapping("/flights/search/v2/page/{pageNumber}")
@@ -194,7 +194,7 @@ public class FlightController {
         request.getSession().setAttribute("planes2",planeFlightService.convertToListFlight(planeFlightPage2.getContent()));
         model.addAttribute("pageTitle","Flights");
         model.addAttribute("pageNum",pageNumber);
-        return "listFlights";
+        return "client/listFlights";
     }
 
     public long totalFee(ArrayList<FlightSelected> flightSelecteds){
@@ -229,7 +229,7 @@ public class FlightController {
         request.getSession().setAttribute("flightSelected", flightSelected);
         request.getSession().setAttribute("totalBill",(long)(totalFee(flightSelected)*(adult + child*0.8) + sl.getFeeCategory()*(adult + child)));
         model.addAttribute("pageTitle","Flights");
-        return "listFlights";
+        return "client/listFlights";
     }
 
     @GetMapping("/flights/takeFlight/{fid}&{pid}")
@@ -258,7 +258,7 @@ public class FlightController {
                         if(fl.getFlight().getFlightID() == fid) {
                             model.addAttribute("error", "This flight has been selected!");
                             model.addAttribute("pageTitle","Flights");
-                            return "listFlights";
+                            return "client/listFlights";
                         }
                     }
                     FlightSelected fs = new FlightSelected();
@@ -305,7 +305,7 @@ public class FlightController {
                 request.getSession().removeAttribute("passengers");
             }
         }
-        return "listFlights";
+        return "client/listFlights";
     }
 
     @GetMapping("/flights/delFlight/{fid}")
@@ -328,7 +328,7 @@ public class FlightController {
             model.addAttribute("error",e.getMessage());
             model.addAttribute("pageTitle","Flights");
         }
-        return "listFlights";
+        return "client/listFlights";
     }
 
     @GetMapping("/flights/fillInfor")
@@ -337,7 +337,7 @@ public class FlightController {
         if(flightSelecteds.size() < 2 && request.getSession().getAttribute("categoryTicket") != null){
             model.addAttribute("pageTitle","Flights");
             model.addAttribute("error","Have to select 2 flight !");
-            return "listFlights";
+            return "client/listFlights";
         }
         model.addAttribute("pageTitle","Passenger's information");
         long quanAdults = (long)request.getSession().getAttribute("adults") + (long)request.getSession().getAttribute("child");
@@ -353,7 +353,7 @@ public class FlightController {
         model.addAttribute("adults",adults);
         ArrayList<Luggage> luggages = lr.findAll();
         model.addAttribute("luggages",luggages);
-        return "inforTicket";
+        return "client/inforTicket";
     }
 
     @PostMapping("/flights/saveInfor")
@@ -409,7 +409,7 @@ public class FlightController {
             }
             request.getSession().setAttribute("flightSelected",flightSelected_new);
             model.addAttribute("quantityTicket",flightSelected_new.size()-1);
-            return "selectSeat";
+            return "client/selectSeat";
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -428,7 +428,7 @@ public class FlightController {
         if(seat.getStatus() > 0){
             model.addAttribute("error","This seat has been selected!");
             model.addAttribute("pageTitle","Select seat");
-            return "selectSeat";
+            return "client/selectSeat";
         }
 
         for(FlightSelected f : flightSelecteds){
@@ -488,7 +488,7 @@ public class FlightController {
         }
         request.getSession().setAttribute("flightSelected",flightSelecteds);
         model.addAttribute("pageTitle","Select seat");
-        return "selectSeat";
+        return "client/selectSeat";
     }
 
     @GetMapping("/flights/displayPayment")
@@ -506,7 +506,7 @@ public class FlightController {
                 }
                 request.getSession().setAttribute("flightSelected",flightSelecteds);
                 model.addAttribute("pageTitle","Select seat");
-                return "selectSeat";
+                return "client/selectSeat";
             }
         }
         for (FlightSelected f :
@@ -516,7 +516,7 @@ public class FlightController {
             seatRepositoriesr.save(seat);
         }
         model.addAttribute("pageTitle","Payment");
-        return "payment";
+        return "client/payment";
     }
 
     @GetMapping("/flights/paymentSuccess")
@@ -548,7 +548,7 @@ public class FlightController {
             model.addAttribute("totalBill",totalBill);
             model.addAttribute("pageTitle","Payment Success");
             request.getSession().removeAttribute("flightSelected");
-            return "paySuccess";
+            return "client/paySuccess";
         }
         else{
             ArrayList<FlightSelected> flightSelecteds = (ArrayList<FlightSelected>) request.getSession().getAttribute("flightSelected");
@@ -561,4 +561,6 @@ public class FlightController {
             return "redirect:/flights/displayPayment";
         }
     }
+
+
 }

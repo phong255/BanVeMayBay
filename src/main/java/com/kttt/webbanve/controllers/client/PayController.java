@@ -66,7 +66,7 @@ public class PayController {
         if(cus.getFullname() == null || cus.getPhone() == null || cus.getAddress() == null || cus.getEmail() == null || cus.getCitizenIdentification() == null){
             model.addAttribute("pageTitle","Payment");
             model.addAttribute("error","Fill all blank!");
-            return "payment";
+            return "client/payment";
         }
         String fullname = cus.getFullname();
         String email = cus.getEmail();

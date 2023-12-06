@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head th:replace="~{fragments :: html_head}"/>
+<head th:replace="~{client/fragments :: html_head}"/>
 <body>
 <style>
     body{
@@ -35,7 +35,7 @@
         display: inline-block;}
     .contant_box_404{ margin-top:-50px;}
 </style>
-<div th:replace="~{fragments:: navigationBar}"/>
+<div th:replace="~{client/fragments:: navigationBar}"/>
 <section class="page_404">
     <div class="container">
         <div class="row">
@@ -61,6 +61,6 @@
         </div>
     </div>
 </section>
-<footer th:replace="~{fragments::footer}"/>
+<footer th:replace="~{client/fragments::footer}"/>
 </body>
 </html>

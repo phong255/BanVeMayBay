@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head th:replace="~{fragments::html_head}"/>
+<head th:replace="~{client/fragments::html_head}"/>
 <body class="w3-light-grey">
 
 <!-- Navigation Bar -->
-<div th:replace="~{fragments::navigationBar}"/>
+<div th:replace="~{client/fragments::navigationBar}"/>
 
 <!-- Page Container -->
 <div th:if="${success}">
@@ -40,10 +40,10 @@
             <p class="w3-text-green" style="font-size: 20px;">Total bill <span class="w3-text-blue" th:text="${#numbers.formatCurrency(order.getTotal_cost())}"></span> </p>
         </div>
         <div>
-            <a class="w3-left" th:href="@{/}"><i class="fa fa-solid fa-arrow-left-to-line"></i>Back to homepage</a>
+            <a class="w3-left" th:href="@{/static}"><i class="fa fa-solid fa-arrow-left-to-line"></i>Back to homepage</a>
         </div>
     </div>
 </div>
-<footer th:replace="~{fragments::footer}" />
+<footer th:replace="~{client/fragments::footer}" />
 </body>
 </html>

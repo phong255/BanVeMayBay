@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head th:replace="~{fragments::html_head}"/>
+<head th:replace="~{client/fragments::html_head}"/>
 <body class="w3-light-grey">
 
 <!-- Navigation Bar -->
-<div th:replace="~{fragments::navigationBar}"/>
+<div th:replace="~{client/fragments::navigationBar}"/>
 
 <!-- Page Container -->
 <div  class="w3-content w3-margin-top" style="max-width:1400px;min-height: 741px;" th:if="${session.flightSelected}">
@@ -88,6 +88,6 @@
 
     <!-- End Page Container -->
 </div>
-<footer th:replace="~{fragments::footer}" />
+<footer th:replace="~{client/fragments::footer}" />
 </body>
 </html>

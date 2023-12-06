@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head th:replace="~{fragments :: html_head}"/>
+<head th:replace="~{client/fragments :: html_head}"/>
 <body class="loading">
 <style>
     :root {
@@ -150,7 +150,7 @@
         }, 1000);
     });
 </script>
-<div th:replace="~{fragments:: navigationBar}"/>
+<div th:replace="~{client/fragments:: navigationBar}"/>
     <h1>500</h1>
     <h2>Unexpected Error <b>:(</b></h2>
     <div class="gears">
@@ -170,6 +170,6 @@
             <div class="bar"></div>
         </div>
     </div>
-<footer th:replace="~{fragments::footer}"/>
+<footer th:replace="~{client/fragments::footer}"/>
 </body>
 </html>

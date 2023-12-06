@@ -21,6 +21,15 @@ import java.util.Objects;
 public class MailSenderService {
     @Autowired
     private JavaMailSender javaMailSender;
+    public void sendMailMessage(String toEmail,String body,String subject) throws MessagingException, IOException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);
+        mimeMessageHelper.setFrom("phong2552001@gmail.com");
+        mimeMessageHelper.setTo(toEmail);
+        mimeMessageHelper.setText(body);
+        mimeMessageHelper.setSubject(subject);
+        javaMailSender.send(mimeMessage);
+    }
     public void sendMailWithAttachment(String toEmail,String body,String subject,String attachment) throws MessagingException, IOException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);

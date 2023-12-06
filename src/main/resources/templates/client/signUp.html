@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head th:replace="~{fragments::html_head}">
-    <script th:src="@{../static/w3images/script.js}"></script>
+<head th:replace="~{client/fragments::html_head}">
+    <script th:src="@{../../static/w3images/script.js}"></script>
 <body>
     <!-- Navigation Bar -->
-    <div th:replace="~{fragments::navigationBar}"/>
+    <div th:replace="~{client/fragments::navigationBar}"/>
     <!-- Header -->
     <header class="w3-display-container w3-content w3-hide-small" style="max-width:1500px">
         <div th:if="${messageSuccess}">
@@ -101,6 +101,6 @@
             </script>
         </div>
     </header>
-    <footer th:replace="~{fragments::footer}" />
+    <footer th:replace="~{client/fragments::footer}" />
 </body>
 </html>

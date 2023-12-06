@@ -2,6 +2,7 @@ package com.kttt.webbanve;
 
 
 import com.kttt.webbanve.services.GeneratePdfService;
+import com.kttt.webbanve.services.MailSenderService;
 import com.kttt.webbanve.services.TicketService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ class WebBanVeApplicationTests {
 
 	@Autowired
 	TicketService ticketService;
+	@Autowired
+	MailSenderService mailSenderService;
 
 	@Test
 	void contextLoads() throws Exception {
