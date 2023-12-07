@@ -1,6 +1,7 @@
 package com.kttt.webbanve;
 
 
+import com.kttt.webbanve.repositories.OrderRepositories;
 import com.kttt.webbanve.services.GeneratePdfService;
 import com.kttt.webbanve.services.MailSenderService;
 import com.kttt.webbanve.services.TicketService;
@@ -18,11 +19,10 @@ class WebBanVeApplicationTests {
 	GeneratePdfService generatePdfService;
 
 	@Autowired
-	TicketService ticketService;
-	@Autowired
 	MailSenderService mailSenderService;
 
 	@Test
 	void contextLoads() throws Exception {
+
 	}
 }

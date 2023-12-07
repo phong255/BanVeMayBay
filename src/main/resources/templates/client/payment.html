@@ -27,6 +27,31 @@
         <!--        th:action="@{/api/payment/create-payment}"-->
         <!-- Right Column -->
         <script>
+            function doPost1(){
+                jsonData1 = {};
+                if($("#account")){
+                    jsonData1 = {
+                        fullname: $("#fullname").val(),
+                        email: $("#email").val(),
+                        phone: $("#phone").val(),
+                        address: $("#address").val(),
+                        citizenIdentification: $("#citizenIdentification").val()
+                    };
+                }
+
+                $.post("http://localhost:8080/api/payment/create-payment",jsonData1,function(data,status){
+                    Swal.fire({
+                        position: 'center',
+                        showConfirmButton: false,
+                        icon: status,
+                        title: 'Congratulation',
+                        text: "Create order successfully",
+                        footer: "Please pay in 15 minutes!",
+                        timer: 1500
+                    });
+                    window.location.replace(data);
+                });
+            }
             function doPost(){
                 jsonData = {};
                 if($("#noAccount")){
@@ -36,15 +61,6 @@
                         phone: $("#phone0").val(),
                         address: $("#address0").val(),
                         citizenIdentification: $("#citizenIdentification0").val()
-                    };
-                }
-                else{
-                    jsonData = {
-                        fullname: $("#fullname").val(),
-                        email: $("#email").val(),
-                        phone: $("#phone").val(),
-                        address: $("#address").val(),
-                        citizenIdentification: $("#citizenIdentification").val()
                     };
                 }
 
@@ -74,12 +90,12 @@
         </div>
         <!--        th:action="@{/api/payment/create-payment}" method="post"-->
         <div class="w3-twothird w3-container" th:if="${session.customer}">
-            <!--                <form id="form_order" name="form_order" onsubmit="doPost()" >-->
+            <input type="hidden" id="account" value="1">
             <h3 class="w3-text-black w3-padding-16 w3-panel w3-pale-blue w3-leftbar w3-rightbar w3-border-blue ">Payment's information</h3>
             <div class="w3-container w3-card w3-white w3-margin-bottom w3-padding-16">
                 <div class="w3-container">
                     <h5 class="w3-opacity"><b>Full name *</b></h5>
-                    <input class="w3-input" type="text" name="fullname" id="fullname" required minlength="1" th:value="${session.customer.fullname}">
+                    <input class="w3-input" type="text" name="fullname0" id="fullname" required minlength="1" th:value="${session.customer.fullname}">
                 </div>
                 <div class="w3-container">
                     <h5 class="w3-text-grey "><i class="fa fa-envelope fa-fw w3-margin-right w3-text-teal"></i>Email *</h5>
@@ -90,7 +106,7 @@
                     <input class="w3-input" type="text" id="phone" name="phone" required minlength="10" maxlength="10" th:value="${session.customer.phone}">
                 </div>
                 <div class="w3-container w3-half">
-                    <h5 class="w3-text-grey "><i class="fa fa-phone fa-fw w3-margin-right w3-text-teal"></i>Address</h5>
+                    <h5 class="w3-text-grey "><i class="fa fa-address-book fa-fw w3-margin-right w3-text-teal"></i>Address</h5>
                     <input class="w3-input" type="text" id="address" name="address" th:value="${session.customer.address}" required>
                 </div>
                 <div class="w3-container w3-half">
@@ -103,7 +119,7 @@
                 </div>
             </div>
             <div class="w3-container ">
-                <input id="btnPay" class="w3-card w3-button w3-red w3-round w3-right w3-margin-top" style="width: 200px;" type="button" onclick="doPost()" value="Pay">
+                <input id="btnPay" class="w3-card w3-button w3-red w3-round w3-right w3-margin-top" style="width: 200px;" type="button" onclick="doPost1()" value="Pay">
             </div>
             <!--                </form>-->
         </div>
@@ -125,7 +141,7 @@
                     <input class="w3-input" type="text" id="phone0" name="phone0" required minlength="10" maxlength="10">
                 </div>
                 <div class="w3-container w3-half">
-                    <h5 class="w3-text-grey "><i class="fa fa-phone fa-fw w3-margin-right w3-text-teal"></i>Address</h5>
+                    <h5 class="w3-text-grey "><i class="fa fa-address-book fa-fw w3-margin-right w3-text-teal"></i>Address</h5>
                     <input class="w3-input" type="text" id="address0" name="address0" required>
                 </div>
                 <div class="w3-container w3-half">

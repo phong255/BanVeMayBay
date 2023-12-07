@@ -70,7 +70,7 @@
         <th:block th:each="ticket : ${tickets}">
             <tr>
                 <td th:utext="${ticket.getTicketID()}">..</td>
-                <td th:utext="${ticket.getAirfares()}">..</td>
+                <td th:utext="${#numbers.formatCurrency(ticket.getAirfares())}">..</td>
                 <td th:utext="${ticket.getLuggage().getWeight()}">..</td>
                 <td th:utext="${ticket.getFlight().getFlightRouter()}">..</td>
                 <td th:utext="${ticket.getOrder().getDate()}">..</td>

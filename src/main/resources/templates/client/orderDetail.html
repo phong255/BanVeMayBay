@@ -26,6 +26,12 @@
             <td><span th:text="${#numbers.formatCurrency(order.getTotal_cost())}"></span></td>
         </tr>
         <tr>
+            <td><b>STATUS</b></td>
+            <td th:if="${order.getStatus()==0}" class="w3-text-green">ALREADY PAID</td>
+            <td th:if="${order.getStatus()==1}" class="w3-text-green">WAITING</td>
+            <td th:if="${order.getStatus()==2}" class="w3-text-red">CANCELED</td>
+        </tr>
+        <tr>
             <td><b>NƠI XUẤT HÓA ĐƠN</b></td>
             <td>GOGO</td>
         </tr>
@@ -50,6 +56,6 @@
         </div>
     </th:block>
 </div>
-<img src="https://cdn.floridapanhandle.com/static/images/footer_plane.png">
+<img src="https://cdn.floridapanhandle.com/static/images/footer_plane.png" style="width: 100%;">
 </body>
 </html>

@@ -60,7 +60,7 @@ public class PayController {
     private OrderInfoService orderInfoService;
 
     @PostMapping(path = "/create-payment")
-    public String createPayment(HttpServletRequest request, PayForm cus, Model model) throws UnsupportedEncodingException {
+    public String createPayment(HttpServletRequest request,PayForm cus, Model model) throws UnsupportedEncodingException {
         Customer customer = new Customer();
         Barcode makeBarcode = new Barcode();
         if(cus.getFullname() == null || cus.getPhone() == null || cus.getAddress() == null || cus.getEmail() == null || cus.getCitizenIdentification() == null){
@@ -180,7 +180,7 @@ public class PayController {
     }
     @PostMapping("/ticket/qrreader/success")
     public String readerSuccess(@RequestBody OrderInfo orderInfo) throws IOException, MessagingException {
-        if(orderInfo == null)
+        if(orderInfo == null||orderInfo.getStatus()==2)
             return "/admin/ticket/qrreader/fail";
         ArrayList<Ticket> tickets = ticketService.getTicketsByOrderID(orderInfo.getOrderID());
         generatePdfService.exportTicket(tickets);
@@ -188,5 +188,21 @@ public class PayController {
         String subject = "GOGO - EXPORT PDF TICKET";
         mailSenderService.sendMailWithAttachment_Ticket(orderInfo.getCustomer().getEmail(),body,subject,tickets);
         return "/admin/ticket/qrreader/success";
+    }
+
+    @PostMapping("/searchOrder")
+    public OrderInfo searchOrder(String qrcodeEncoded){
+        byte[] qrcode = Base64.getDecoder().decode(qrcodeEncoded);
+        OrderInfo orderInfo = orderInfoService.getOrderByQrcode(new String(qrcode));
+        if(orderInfo == null)
+            return null;
+        return orderInfo;
+    }
+    @PostMapping("/showOrder")
+    public String showOrder(@RequestBody OrderInfo orderInfo,HttpServletRequest request){
+        ArrayList<Ticket> tickets = ticketService.getTicketsByOrderID(orderInfo.getOrderID());
+        request.getSession().setAttribute("tickets",tickets);
+        request.getSession().setAttribute("order",orderInfo);
+        return "/flights/searchOrder";
     }
 }

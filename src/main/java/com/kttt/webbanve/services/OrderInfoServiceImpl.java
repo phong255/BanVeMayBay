@@ -1,26 +1,30 @@
 package com.kttt.webbanve.services;
 
 import com.kttt.webbanve.models.OrderInfo;
+import com.kttt.webbanve.models.Ticket;
 import com.kttt.webbanve.payload.CostStatistics;
 import com.kttt.webbanve.payload.CostStatisticsByQuarter;
 import com.kttt.webbanve.repositories.OrderInfoRepository;
 import com.kttt.webbanve.repositories.OrderRepositories;
 import com.kttt.webbanve.repositories.StatisticsRepoCustomImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class OrderInfoServiceImpl implements OrderInfoService{
 
     private OrderRepositories orderRepositories;
-    private OrderInfoRepository orderInfoRepository;
     private StatisticsRepoCustomImpl srci;
 
     @Autowired
-    public OrderInfoServiceImpl(OrderInfoRepository orderInfoRepository, StatisticsRepoCustomImpl srci, OrderRepositories orderRepositories) {
-        this.orderInfoRepository = orderInfoRepository;
+    public OrderInfoServiceImpl(StatisticsRepoCustomImpl srci, OrderRepositories orderRepositories) {
         this.orderRepositories = orderRepositories;
         this.srci = srci;
     }
@@ -32,8 +36,31 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 //    }
 
     @Override
+    public Page<OrderInfo> findAll(int pageNo, int pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+        return orderRepositories.findAll(pageable);
+    }
+
+    @Override
     public OrderInfo getOrderByQrcode(String Qrcode) {
         return orderRepositories.getOrderInfoByQrCode(Qrcode);
+    }
+
+    @Override
+    public OrderInfo getOrderByID(int orderID) {
+        return orderRepositories.getOrderInfoByOrderID(orderID);
+    }
+
+    @Override
+    public void saveOrder(OrderInfo orderInfo) {
+        orderRepositories.save(orderInfo);
+    }
+
+    @Override
+    public ArrayList<OrderInfo> getAllOrders() {
+        return orderRepositories.getAllOrderInfos();
     }
 
     @Override
@@ -46,27 +73,5 @@ public class OrderInfoServiceImpl implements OrderInfoService{
         return srci.costStatisticsByQuarter();
     }
 
-//    private OrderInfoDto mapToDto(OrderInfo orderInfo) {
-//        List<TicketDto> ticketDtoList = new ArrayList<>();
-//
-//        OrderInfoDto orderInfoDto = new OrderInfoDto();
-//        orderInfoDto.setOrderId(orderInfo.getOrderId());
-//        orderInfoDto.setDate(orderInfo.getDate());
-//        orderInfoDto.setStatus(orderInfo.getStatus());
-//        for (Ticket ticket:orderInfo.getTickets()) {
-//            ticketDtoList.add(mapToDtoTicket(ticket));
-//        }
-//        orderInfoDto.setTickets(ticketDtoList);
-//        return orderInfoDto;
-//    }
-
-//    private TicketDto mapToDtoTicket(Ticket ticket) {
-//        TicketDto ticketDto = new TicketDto();
-//        ticketDto.setTicketId(ticket.getTicketId());
-//        ticketDto.setAirfares(ticket.getAirfares());
-//        ticketDto.setLuggageId(ticket.getLuggageId());
-//        ticketDto.setFlightId(ticket.getFlightId());
-//        return ticketDto;
-//    }
 
 }

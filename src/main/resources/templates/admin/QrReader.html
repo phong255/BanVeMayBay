@@ -51,9 +51,6 @@
                 });
             </script>
         </div>
-        <div id="order" th:if="${session.orderQR}">
-            <span th:text="${session.orderQR.getQrCode()}"></span>
-        </div>
         <div class="w3-card " id="reader"></div>
         <div class="w3-red w3-card" id="error"></div>
         <div class="w3-panel w3-text-red w3-leftbar w3-border-red w3-pale-red" th:if="${error}" th:text="${error}"></div>

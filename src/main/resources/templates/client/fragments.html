@@ -86,6 +86,7 @@
     <div th:if="${session.flightSelected}">
         <a th:href="@{/flights}" class="w3-bar-item w3-button w3-text-red w3-hover-red w3-right">Change select</a>
     </div>
+    <a th:href="@{/flights/searchOrder}" class="w3-bar-item w3-button w3-text-red w3-hover-red w3-right">Cancel flights</a>
 </div>
 <!-- Header -->
 <header th:fragment="header" class="w3-display-container w3-content w3-hide-small" style="max-width:1500px">

@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -54,6 +51,10 @@ public class FlightController {
     PlaneFlightServiceImpl planeFlightService;
     @Autowired
     PlaneService planeService;
+    @Autowired
+    TicketService ticketService;
+    @Autowired
+    OrderInfoService orderInfoService;
     @GetMapping("/flights")
     public String listFlight(Model model,HttpServletRequest request){
         ArrayList<Flight> flights = (ArrayList<Flight>) flightService.getAllFlights();
@@ -290,7 +291,7 @@ public class FlightController {
             }
         }
         model.addAttribute("pageTitle","Flights");
-        return "listFlights";
+        return "client/listFlights";
     }
 
     @GetMapping("/flights/delSelected")
@@ -435,13 +436,13 @@ public class FlightController {
             if (f.getSeat() != null && sid == f.getSeat().getSeatID()) {
                 model.addAttribute("error", "Has been selected!");
                 model.addAttribute("pageTitle","Select seat");
-                return "selectSeat";
+                return "client/selectSeat";
             }
             if(f.getSeat() != null) {
                 if (f.getFlight().getDepartingFrom().equals(flight.getDepartingFrom()) && f.getFlight().getArrivingAt().equals(flight.getArrivingAt()) && f.getCustomer().getEmail().equals(cemail)) {
                     model.addAttribute("error", "Has been selected!");
                     model.addAttribute("pageTitle","Select seat");
-                    return "selectSeat";
+                    return "client/selectSeat";
                 }
                 dem ++;
             }
@@ -464,7 +465,7 @@ public class FlightController {
         request.getSession().setAttribute("flightSelected",flightSelecteds);
         model.addAttribute("seatPo",sid);
         model.addAttribute("pageTitle","Select seat");
-        return "selectSeat";
+        return "client/selectSeat";
     }
     @GetMapping("/flights/changeInfo/{sid}")
     public String changeInfo(@PathVariable("sid") int sid,Model model,HttpServletRequest request){
@@ -540,7 +541,7 @@ public class FlightController {
             ArrayList<Ticket> tickets = (ArrayList<Ticket>) request.getSession().getAttribute("tickets");
             String processedHtml = "";
             Context dataContext = mapper.setData(order,tickets);
-            processedHtml = springTemplateEngine.process("orderDetail",dataContext);
+            processedHtml = springTemplateEngine.process("client/orderDetail",dataContext);
             generatePdfService.htmlToPdf(processedHtml,order.getQrCode());
             generatePdfService.addImgToPDF(order.getQrCode());
             mss.sendMailWithAttachment(order.getCustomer().getEmail(),"Cảm ơn bạn đã tin tưởng đặt vé tại đại lý GOGO !\nXem chi tiết đơn hàng phía dưới.","Chi tiết đơn hàng",order.getQrCode());
@@ -562,5 +563,34 @@ public class FlightController {
         }
     }
 
+    @GetMapping("/flights/searchOrder")
+    public String searchOrder(Model model,HttpServletRequest request){
+        if(request.getSession().getAttribute("order") != null && request.getSession().getAttribute("tickets") != null){
+            model.addAttribute("order",request.getSession().getAttribute("order"));
+            model.addAttribute("tickets",request.getSession().getAttribute("tickets"));
+            request.getSession().removeAttribute("order");
+            request.getSession().removeAttribute("tickets");
+            model.addAttribute("success","success");
+        }
+        model.addAttribute("pageTitle","Cancel flights");
+        return "client/searchOrder";
+    }
 
+    @PostMapping("/flights/cancel")
+    public String cancel(HttpServletRequest request,Model model){
+        String orderID = request.getParameter("orderID");
+        OrderInfo orderInfo = orderInfoService.getOrderByID(Integer.parseInt(orderID));
+        orderInfo.setStatus(1);
+        orderInfoService.saveOrder(orderInfo);
+        model.addAttribute("success","Send requirement successfully!");
+        model.addAttribute("pageTitle","Cancel flights");
+        return "client/searchOrder";
+    }
+
+    @GetMapping("/flights/showOrder/fail")
+    public String showFail(Model model){
+        model.addAttribute("error","Order does not exist!");
+        model.addAttribute("pageTitle","Cancel flights");
+        return "client/searchOrder";
+    }
 }
