@@ -66,8 +66,15 @@
       <tr>
         <td th:utext="${user.userID}">..</td>
         <td th:utext="${user.getUsername()}">..</td>
-        <td th:utext="${user.getRole()}">..</td>
-
+        <th:block class="" th:if="${user.getRole() == 0}">
+            <td th:utext="'CUSTOMER'">..</td>
+        </th:block>
+        <th:block th:if="${user.getRole() == 1}">
+          <td class="w3-text-yellow" th:utext="'EMPLOYEE'">..</td>
+        </th:block>
+        <th:block th:if="${user.getRole() == 2}">
+          <td class="w3-text-red" th:utext="'MANAGER'">..</td>
+        </th:block>
         <td style="display: flex" th:if="${session.ROLE_ADMIN}">
             <button class="update">
               <a style="text-decoration: none; color: white;" th:href="@{/admin/updateUser/{id}(id=${user.getUserID()})}">Update</a>

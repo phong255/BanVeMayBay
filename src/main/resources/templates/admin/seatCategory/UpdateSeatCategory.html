@@ -28,7 +28,7 @@
 <div class="w3-main" style="margin-left:300px;margin-top:43px;background-color: #f1f1f1">
 
   <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Update seat category</h1>
-  <form style="padding-left: 20px;" th:method="POST" th:action="@{/admin/updateSeatCategory/{id}(id=${seatCategory.getSeatCategoryId()})}">
+  <form style="padding-left: 20px;" th:method="POST" th:action="@{/admin/updateSeatCategory/{id}(id=${seatCategory.getSeatCategoryID()})}">
     <p class="paddingName">categoryName</p>
     <input type="text" name="categoryName" placeholder="categoryName" th:value="${seatCategory.getCategoryName()}"/>
 <!--    <p th:if="${categoryName}" class="error">[[${categoryName}]]</p>-->

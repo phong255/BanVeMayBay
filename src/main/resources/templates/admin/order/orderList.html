@@ -77,7 +77,7 @@
                     <td>
                         <form method="post" th:action="@{/admin/cancel}" onclick="return showConfirmCancel(this)">
                             <input type="hidden" name="orderID" th:value="${order.getOrderID()}">
-                            <input type="submit" class="w3-button w3-red" value="Confirm">
+                            <input type="submit" class="w3-button w3-red" value="Cancel/Refund">
                         </form>
                         <script>
                             function showConfirmCancel(a){

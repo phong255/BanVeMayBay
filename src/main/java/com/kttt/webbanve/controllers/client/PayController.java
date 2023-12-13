@@ -180,7 +180,7 @@ public class PayController {
     }
     @PostMapping("/ticket/qrreader/success")
     public String readerSuccess(@RequestBody OrderInfo orderInfo) throws IOException, MessagingException {
-        if(orderInfo == null||orderInfo.getStatus()==2)
+        if(orderInfo == null||orderInfo.getStatus()>0)
             return "/admin/ticket/qrreader/fail";
         ArrayList<Ticket> tickets = ticketService.getTicketsByOrderID(orderInfo.getOrderID());
         generatePdfService.exportTicket(tickets);

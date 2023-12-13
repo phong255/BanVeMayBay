@@ -1,34 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-
-    <style>
-        .error {
-            color: red;
-        }
-    </style>
-</head>
-<!--action="/admin/addPlane"
- data-th-object="${plane}"-->
+<head th:replace="~{admin/fragmentsAdmin :: admin_head_pageList}"/>
 <body>
-  <form th:method="POST" th:action="@{/admin/addPlane}">
-      <input type="text" name="planeName" placeholder="Plane name"/>
+<style>
+    .error {
+        color: red;
+    }
+</style>
+
+<!-- Top container -->
+<header th:replace="~{admin/fragmentsAdmin :: admin_header}"/>
+
+<!-- Sidebar/menu -->
+<div th:replace="~{admin/fragmentsAdmin :: admin_menu}"></div>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div th:replace="~{admin/fragmentsAdmin :: admin_overlay}"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;background-color: #f1f1f1">
+
+    <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Add new Plane</h1>
+
+
+    <form th:method="POST" th:action="@{/admin/addPlane}">
+      <input class="w3-margin" type="text" name="planeName" placeholder="Plane name"/>
       <p th:if="${planeName}" class="error">[[${planeName}]]</p>
       <br/>
-      <input type="number" value="0" name="slSeat" placeholder="Quantity seat">
+      <input class="w3-margin" type="number" value="0" name="slSeat" placeholder="Quantity seat">
       <p th:if="${quantitySeat}" class="error">[[${quantitySeat}]]</p>
       <br/>
-      <select name="airlineID">
+      <select class="w3-margin" name="airlineID">
           <th:block th:each="airlineid : ${airlineCompanies}">
               <option th:utext="${airlineid.getAirlineID()}">..</option>
           </th:block>
       </select>
       <br/>
-      <button type="submit" value="add">add</button>
+      <button class="w3-margin w3-button w3-gray" type="submit" value="add">Add</button>
   </form>
-  <a href="/admin/listPlane">Plane list</a>
-
+    <a href="/admin/listPlane">Plane list</a>
+</div>
 </body>
 </html>

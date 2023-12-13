@@ -4,8 +4,11 @@ import com.kttt.webbanve.models.OrderInfo;
 import com.kttt.webbanve.payload.CostStatistics;
 import com.kttt.webbanve.payload.CostStatisticsByQuarter;
 import com.kttt.webbanve.payload.OrderInfoDto;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,4 +21,9 @@ public interface OrderInfoService {
 //    List<OrderInfoDto> findAll();
     List<CostStatistics> statisticsCostByMonth();
     List<CostStatisticsByQuarter> costStatisticsByQuarter();
+    void updateOrderStatus();
+
+    String refund(HttpServletRequest req) throws IOException;
+
+    String queryOrder(HttpServletRequest req) throws IOException;
 }

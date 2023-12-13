@@ -64,8 +64,6 @@ public class AdminController extends AbstractClass {
         try {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            System.out.println(username);
-            System.out.println(password);
             HttpSession session = request.getSession();
             User user = userServiceImpl.getAccount(username);
             if(isNullorEmpty(username) || isNullorEmpty(password)){
