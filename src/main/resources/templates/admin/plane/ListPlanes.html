@@ -44,17 +44,17 @@
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:300px;margin-top:43px;background-color: #f1f1f1">
 
-    <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Plane List</h1>
+    <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Danh sách máy bay</h1>
 
 
     <table class="table">
         <thead>
             <tr>
-                <th th:replace="~{admin/fragmentsAdmin :: column_link('planeID', 'planeID', 'listPlane')}"></th>
-                <th th:replace="~{admin/fragmentsAdmin :: column_link('planeName', 'Plane name', 'listPlane')}"></th>
-                <th th:replace="~{admin/fragmentsAdmin :: column_link('quantitySeat', 'Quantity of seat', 'listPlane')}"></th>
-                <th th:replace="~{admin/fragmentsAdmin :: column_link('airlineCompany.airlineName', 'Airline Name', 'listPlane')}"></th>
-                <th style="width: 170px;">Action</th>
+                <th th:replace="~{admin/fragmentsAdmin :: column_link('planeID', 'ID máy bay', 'listPlane')}"></th>
+                <th th:replace="~{admin/fragmentsAdmin :: column_link('planeName', 'Tên máy bay', 'listPlane')}"></th>
+                <th th:replace="~{admin/fragmentsAdmin :: column_link('quantitySeat', 'Số lượng ghế', 'listPlane')}"></th>
+                <th th:replace="~{admin/fragmentsAdmin :: column_link('airlineCompany.airlineName', 'Hãng hàng không', 'listPlane')}"></th>
+                <th style="width: 170px;">Chức năng</th>
             </tr>
         </thead>
         <tbody>
@@ -67,11 +67,11 @@
                     <td th:utext="${plane.getAirlineCompany().getAirline_name()}">..</td>
                     <td style="display: flex">
                         <button class="update">
-                            <a style="text-decoration: none; color: white;" th:href="@{/admin/updatePlane/{id}(id=${plane.getPlaneID()})}">Update</a>
+                            <a style="text-decoration: none; color: white;" th:href="@{/admin/updatePlane/{id}(id=${plane.getPlaneID()})}">Sửa</a>
                         </button>
 
                         <form class="form-delete" method="POST" th:action="@{/admin/deletePlane/{id}(id=${plane.getPlaneID()})}">
-                            <button  class="delete" type="submit" onclick="if (!(confirm('Are you sure you want to delete this plane?'))) return false">Delete</button>
+                            <button  class="delete" type="submit" onclick="if (!(confirm('Bạn có chắn chắn muốn xóa?'))) return false">Xóa</button>
                         </form>
                     </td>
                 </tr>
@@ -79,7 +79,7 @@
         </tbody>
     </table>
     <div th:replace="~{admin/fragmentsAdmin :: pagination('listPlane', 'planes')}"></div>
-    <a href="/admin/addPlane">Add new plane</a>
+    <a href="/admin/addPlane">Thêm mới máy bay</a>
 </div>
 </body>
 </html>

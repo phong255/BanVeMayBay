@@ -10,7 +10,7 @@
 <!-- Overlay effect when opening sidebar on small screens -->
 <div th:replace="~{admin/fragmentsAdmin :: admin_overlay}"></div>
 <div class="w3-main" style="margin-left:300px;margin-top:43px;background-color: #f1f1f1">
-    <h1 style="color: #00aba9;">Statistics ticket per order</h1>
+    <h1 style="color: #00aba9;">Thống kê số lượng vé mỗi hóa đơn</h1>
     <div style="width: 500px">
         <canvas id="myChart" width="400" height="200"></canvas>
     </div>
@@ -27,7 +27,7 @@
         total += item.quantitySameNumberOfTicketPerOrder;
     });
     countOrderOfQuantityTicket.forEach(item => {
-        quantityTicketPerOrderArray.push(item.quantityTicketPerOrder + " ticket per order (" + (item.quantitySameNumberOfTicketPerOrder) + ")");
+        quantityTicketPerOrderArray.push(item.quantityTicketPerOrder + " vé mỗi hóa đơn (" + (item.quantitySameNumberOfTicketPerOrder) + ")");
         quantitySameNumberOfTicketPerOrderArray.push((item.quantitySameNumberOfTicketPerOrder/total)*100);
     });
     var barColors = [
@@ -54,7 +54,7 @@
         options: {
             title: {
                 display: true,
-                text: "Statistics quantity of ticket per order."
+                text: "Thống kê số lượng vé mỗi hóa đơn."
             }
         }
     });

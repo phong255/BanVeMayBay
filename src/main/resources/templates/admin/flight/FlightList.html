@@ -44,23 +44,23 @@
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:300px;margin-top:43px;background-color: #f1f1f1">
 
-  <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Flight list</h1>
+  <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Danh sách chuyến bay</h1>
 
   <form style="display: inline-block" th:method="GET" th:action="@{/admin/flight/search}">
-    <input style="min-width: 250px" type="text" placeholder="search by arriving at or departing form" name="search">
-    <input type="submit" value="submit">
+    <input style="min-width: 250px" type="text" placeholder="Tìm kiếm theo địa điểm đi hoặc đến" name="search">
+    <input type="submit" value="Tìm kiếm">
   </form>
 
   <table class="table">
     <thead>
     <tr>
-      <th><a th:href="@{'/admin/flightList/page/'+${currentPage}+'?sortBy=flightID'}">flightID</a></th>
-      <th><a th:href="@{'/admin/flightList/page/'+${currentPage}+'?sortBy=departingForm'}">departing form</a></th>
-      <th><a th:href="@{'/admin/flightList/page/'+${currentPage}+'?sortBy=arrivingAt'}">arriving at</a></th>
-      <th><a th:href="@{'/admin/flightList/page/'+${currentPage}+'?sortBy=flightTime'}">flight time</a></th>
-      <th><a th:href="@{'/admin/flightList/page/'+${currentPage}+'?sortBy=departureTime'}">departure time</a></th>
-      <th><a th:href="@{'/admin/flightList/page/'+${currentPage}+'?sortBy=feeFlight'}">fee flight</a></th>
-      <th style="width: 170px;">action</th>
+      <th><a th:href="@{'/admin/flightList/page/'+${currentPage}+'?sortBy=flightID'}">ID chuyến bay</a></th>
+      <th><a th:href="@{'/admin/flightList/page/'+${currentPage}+'?sortBy=departingForm'}">Khởi hành từ</a></th>
+      <th><a th:href="@{'/admin/flightList/page/'+${currentPage}+'?sortBy=arrivingAt'}">Điểm đến</a></th>
+      <th><a th:href="@{'/admin/flightList/page/'+${currentPage}+'?sortBy=flightTime'}">Giờ cất cánh</a></th>
+      <th><a th:href="@{'/admin/flightList/page/'+${currentPage}+'?sortBy=departureTime'}">Giờ hạ cánh</a></th>
+      <th><a th:href="@{'/admin/flightList/page/'+${currentPage}+'?sortBy=feeFlight'}">Phí chuyến bay</a></th>
+      <th style="width: 170px;">Chức năng</th>
     </tr>
     </thead>
     <tbody>
@@ -75,11 +75,11 @@
 
         <td style="display: flex">
           <button class="update">
-            <a style="text-decoration: none; color: white;" th:href="@{/admin/updateFlight/{id}(id=${flight.getFlightID()})}">Update</a>
+            <a style="text-decoration: none; color: white;" th:href="@{/admin/updateFlight/{id}(id=${flight.getFlightID()})}">Sửa</a>
           </button>
 
           <form class="form-delete" method="POST" th:action="@{/admin/deleteFlight/{id}(id=${flight.getFlightID()})}">
-            <button  class="delete" type="submit" onclick="if (!(confirm('Are you sure you want to delete this flight?'))) return false">Delete</button>
+            <button  class="delete" type="submit" onclick="if (!(confirm('Bạn có chắc muốn xóa?'))) return false">Xóa</button>
           </form>
         </td>
       </tr>
@@ -88,7 +88,7 @@
   </table>
 
   <div th:replace="~{admin/fragmentsAdmin :: pagination('flightList', 'flights')}"></div>
-  <a href="/admin/addFlight">Add new flight</a>
+  <a href="/admin/addFlight">Thêm mới chuyến bay</a>
 </div>
 </body>
 </html>

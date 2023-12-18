@@ -20,25 +20,30 @@
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:300px;margin-top:43px;background-color: #f1f1f1">
 
-    <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Add new Plane</h1>
+    <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Thêm mới máy bay</h1>
 
 
     <form th:method="POST" th:action="@{/admin/addPlane}">
-      <input class="w3-margin" type="text" name="planeName" placeholder="Plane name"/>
+        <label class="" for="planeName">Tên máy bay</label>
+      <input class="w3-margin input-group w3-input" type="text" id="planeName" name="planeName" placeholder="Tên máy bay"/>
       <p th:if="${planeName}" class="error">[[${planeName}]]</p>
       <br/>
-      <input class="w3-margin" type="number" value="0" name="slSeat" placeholder="Quantity seat">
+        <label for="slSeat">Số lượng ghế</label>
+      <input class="w3-margin input-group w3-input" type="number" value="0" id="slSeat" name="slSeat" placeholder="Số lượng ghế">
       <p th:if="${quantitySeat}" class="error">[[${quantitySeat}]]</p>
       <br/>
-      <select class="w3-margin" name="airlineID">
+        <label for="airlineID">Hãng hàng không</label>
+      <select class="w3-margin input-group w3-input" id="airlineID" name="airlineID">
           <th:block th:each="airlineid : ${airlineCompanies}">
-              <option th:utext="${airlineid.getAirlineID()}">..</option>
+              <option th:value="${airlineid.getAirlineID()}">
+                  <span th:text="${airlineid.getAirlineName()}"></span>
+              </option>
           </th:block>
       </select>
       <br/>
-      <button class="w3-margin w3-button w3-gray" type="submit" value="add">Add</button>
+      <button class="w3-margin btn btn-primary" type="submit" value="add">Lưu</button>
   </form>
-    <a href="/admin/listPlane">Plane list</a>
+    <a href="/admin/listPlane">Danh sách máy bay</a>
 </div>
 </body>
 </html>

@@ -179,4 +179,22 @@ public class AccountController {
         model.addAttribute("pageTitle","Personal information");
         return "client/changingPassword";
     }
+
+    @PostMapping("/account/advertise")
+    public String signUpAds(HttpServletRequest req,Model model){
+        String email = req.getParameter("email-ads");
+        Customer customer;
+        if(email.trim().isEmpty()){
+            model.addAttribute("error","Input your email !");
+        }
+        else {
+            customer  = cu.getCustomerByEmail(email);
+            if(customer != null){
+                model.addAttribute("error","Already exist !");
+            }
+            model.addAttribute("success","Success");
+        }
+        model.addAttribute("pageTitle","Homepage");
+        return "client/index";
+    }
 }

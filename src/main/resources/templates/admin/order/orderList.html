@@ -46,19 +46,19 @@
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:300px;margin-top:43px;background-color: #f1f1f1">
 
-    <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Order list</h1>
+    <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Danh sách hóa đơn</h1>
 
 
     <table class="table">
         <thead>
         <tr>
-            <th th:replace="~{admin/fragmentsAdmin :: column_link('orderID', 'Order ID', 'orderList')}"></th>
-            <th th:replace="~{admin/fragmentsAdmin :: column_link('total_cost', 'Total bill', 'orderList')}"></th>
-            <th th:replace="~{admin/fragmentsAdmin :: column_link('customer', 'Customer', 'orderList')}"></th>
-            <th th:replace="~{admin/fragmentsAdmin :: column_link('sortBy=date', 'Date', 'orderList')}"></th>
-            <th th:replace="~{admin/fragmentsAdmin :: column_link('qrCode', 'QR code', 'orderList')}"></th>
-            <th th:replace="~{admin/fragmentsAdmin :: column_link('status', 'Status', 'orderList')}"></th>
-            <th class="w3-text-red">Cancel request</th>
+            <th th:replace="~{admin/fragmentsAdmin :: column_link('orderID', 'ID hóa đơn', 'orderList')}"></th>
+            <th th:replace="~{admin/fragmentsAdmin :: column_link('total_cost', 'Tổng tiền', 'orderList')}"></th>
+            <th th:replace="~{admin/fragmentsAdmin :: column_link('customer', 'Khách hàng', 'orderList')}"></th>
+            <th th:replace="~{admin/fragmentsAdmin :: column_link('sortBy=date', 'Ngày tạo', 'orderList')}"></th>
+            <th th:replace="~{admin/fragmentsAdmin :: column_link('qrCode', 'Mã hóa đơn', 'orderList')}"></th>
+            <th th:replace="~{admin/fragmentsAdmin :: column_link('status', 'Trạng thái', 'orderList')}"></th>
+            <th class="w3-text-red">Yêu cầu hủy</th>
         </tr>
         </thead>
         <tbody>
@@ -70,25 +70,25 @@
                 <td th:utext="${order.getDate()}">..</td>
                 <td th:utext="${order.getQrCode()}">..</td>
                 <th:block th:if="${order.getStatus()}==0">
-                    <td class="w3-text-green">Already paid</td>
+                    <td class="w3-text-green">ĐÃ THANH TOÁN</td>
                 </th:block>
                 <th:block th:if="${order.getStatus()}==1">
-                    <td class="w3-text-yellow">Waiting</td>
+                    <td class="w3-text-yellow">CHỜ XÁC NHẬN</td>
                     <td>
                         <form method="post" th:action="@{/admin/cancel}" onclick="return showConfirmCancel(this)">
                             <input type="hidden" name="orderID" th:value="${order.getOrderID()}">
-                            <input type="submit" class="w3-button w3-red" value="Cancel/Refund">
+                            <input type="submit" class="w3-button w3-red" value="Xác nhận">
                         </form>
                         <script>
                             function showConfirmCancel(a){
                                 Swal.fire({
-                                    title: "Are you sure?",
+                                    title: "Bạn có chắc chắn?",
                                     text: null,
                                     icon: "warning",
                                     showCancelButton: true,
                                     confirmButtonColor: "#3085d6",
                                     cancelButtonColor: "#d33",
-                                    confirmButtonText: "Yes, cancel it!"
+                                    confirmButtonText: "Đồng ý"
                                 }).then((result) => {
                                     if(result.isConfirmed)
                                         a.submit();
@@ -99,7 +99,7 @@
                     </td>
                 </th:block>
                 <th:block th:if="${order.getStatus()}==2">
-                    <td class="w3-text-red">Canceled</td>
+                    <td class="w3-text-red">ĐÃ HỦY</td>
                 </th:block>
             </tr>
         </th:block>

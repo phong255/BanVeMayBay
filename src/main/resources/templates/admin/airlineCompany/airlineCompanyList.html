@@ -47,9 +47,9 @@
   <div th:if="${message != null}" class="alert alert-success text-center">
     [[${message}]]
   </div>
-  <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Airline company List</h1>
+  <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Danh sách hãng hàng không</h1>
 
-  <a th:href="@{/admin/airlineCompanies/new}">Add new airline company</a>
+  <a th:href="@{/admin/airlineCompanies/new}">Thêm mới hãng hàng không</a>
 
   <div>
     <form th:action="@{/admin/airlineCompanies/page/1}" class="form-inline mb-3">
@@ -58,19 +58,19 @@
       Filter:&nbsp;
       <input type="search" name="keyword" th:value="${keyword}" class="form-control" required/>
       &nbsp;&nbsp;
-      <input type="submit" value="Search" class="btn btn-primary"/>
+      <input type="submit" value="Tìm kiếm" class="btn btn-primary"/>
       &nbsp;&nbsp;
-      <input type="button" value="Clear" class="btn" onclick="clearFilter()" style="background-color: #cccccc"/>
+      <input type="button" value="Xóa" class="btn" onclick="clearFilter()" style="background-color: #cccccc"/>
     </form>
   </div>
 
   <table class="table">
     <thead>
     <tr>
-      <th th:replace="~{admin/fragmentsAdmin :: column_link('airlineID', 'Airline ID', 'airlineCompanies')}"></th>
-      <th th:replace="~{admin/fragmentsAdmin :: column_link('airlineName', 'Airline Name', 'airlineCompanies')}"></th>
+      <th th:replace="~{admin/fragmentsAdmin :: column_link('airlineID', 'ID hãng hàng không', 'airlineCompanies')}"></th>
+      <th th:replace="~{admin/fragmentsAdmin :: column_link('airlineName', 'Tên hãng hàng không', 'airlineCompanies')}"></th>
       <th>Logo</th>
-      <th style="width: 170px;">Action</th>
+      <th style="width: 170px;">Chức năng</th>
     </tr>
     </thead>
     <tbody>
@@ -83,12 +83,12 @@
           <img th:if="${airlineCompany.airlineLogo != null}" th:src="@{${airlineCompany.getPhotosImagePath()}}" style="width: 200px;"/>
         </td>
         <td style="display: flex">
-            <a class="update text-center" style="text-decoration: none; color: white;" th:href="@{'/admin/airlineCompanies/edit/' + ${airlineCompany.airlineID}}">edit</a>
+            <a class="update text-center" style="text-decoration: none; color: white;" th:href="@{'/admin/airlineCompanies/edit/' + ${airlineCompany.airlineID}}">Sửa</a>
 
             <a class="delete text-center link-delete"
                th:href="@{'/admin/airlineCompanies/delete/' + ${airlineCompany.airlineID}}"
                th:airlineID="${airlineCompany.airlineID}"
-               title="Delete this user">Delete</a>
+               title="Xóa hãng hàng không này">Xóa</a>
         </td>
       </tr>
     </tbody>
@@ -100,7 +100,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Delete confirmation</h4>
+          <h4 class="modal-title">Xóa thông tin</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
@@ -109,8 +109,8 @@
         </div>
 
         <div class="modal-footer">
-          <a class="btn btn-success" href="" id="yesButton">Yes</a>
-          <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+          <a class="btn btn-success" href="" id="yesButton">Đồng ý</a>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Không</button>
         </div>
       </div>
     </div>
@@ -124,7 +124,7 @@
       link = $(this);
       airlineID = link.attr("airlineID");
       $("#yesButton").attr("href", link.attr("href"));
-      $("#confirmText").text("Are you sure to delete this airline company ID " + airlineID + "?");
+      $("#confirmText").text("Bạn có chắc chắn xóa hãng hàng không ID = " + airlineID + "?");
       $("#confirmModal").modal();
     });
   });

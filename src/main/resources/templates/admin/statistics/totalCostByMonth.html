@@ -16,13 +16,13 @@
 <!-- Overlay effect when opening sidebar on small screens -->
 <div th:replace="~{admin/fragmentsAdmin :: admin_overlay}"></div>
 <div class="w3-main" style="margin-left:300px;margin-top:43px;background-color: #f1f1f1">
-    <h1 style="color: #b3d6c1;">Income Statistics</h1>
+    <h1 style="color: #b3d6c1;">Thống kê doanh thu</h1>
 
     <div>
         <!-- Add a dropdown to select year -->
-        <label for="selectYear">Select Year:</label>
+        <label for="selectYear">Chọn năm:</label>
         <select id="selectYear" onchange="updateChart(this)">
-            <option value="" disabled selected>Select Year</option>
+            <option value="" disabled selected>Chọn số năm</option>
             <!-- Render options based on uniqueYears -->
             <option th:each="uniqueYear : ${uniqueYears}" th:value="${uniqueYear}" th:text="${uniqueYear}"></option>
         </select>
@@ -33,8 +33,7 @@
         <form th:method="GET" th:action="@{/admin/statistics/incomeByMonth}" >
 
             <label>
-                <span>Select multiple years:</span>
-                <span>number of year:</span>
+                <span>Chọn nhiều năm:</span>
                 <select name="numberOfYear">
                     <option th:value="${numberOfYear}" th:utext="${numberOfYear}"></option>
                     <option value="1">1</option>
@@ -43,7 +42,7 @@
                     <option value="4">4</option>
                     <option value="5">5</option>
                 </select>
-                <span>. Select from: </span>
+                <span>. Bắt đầu từ: </span>
             </label>
 
             <label>
@@ -53,7 +52,7 @@
                     <option th:each="uniqueYear : ${uniqueYears}" th:value="${uniqueYear}" th:text="${uniqueYear}"></option>
                 </select>
             </label>
-            <input type="submit" onsubmit="updateMultiChart(this)">
+            <input class="btn btn-primary" type="submit" onsubmit="updateMultiChart(this)">
         </form>
     </div>
 <!--    <div>-->

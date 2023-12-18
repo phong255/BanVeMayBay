@@ -13,6 +13,12 @@ public class CustomerServiceImpl implements CustomerService{
     public Customer getCustomer(String username) {
         return cu.findCustomerByUser_Username(username);
     }
+
+    @Override
+    public Customer getCustomerByEmail(String email) {
+        return cu.getCustomerByEmail(email);
+    }
+
     public Customer getByID(int id){
         return cu.findCustomerByCustomerID(id);
     }

@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<p><b>Passenger's name: </b><span th:text="${order.getCustomer().getFullname()}"></span></p>
+<p><b>Họ và tên khách hàng : </b><span th:text="${order.getCustomer().getFullname()}"></span></p>
 <div class="w3-border-grey">
     <table class="w3-table w3-striped" style="border: none;text-align: left;width: 100%;">
         <tr>
@@ -26,7 +26,7 @@
             <td><span th:text="${#numbers.formatCurrency(order.getTotal_cost())}"></span></td>
         </tr>
         <tr>
-            <td><b>STATUS</b></td>
+            <td><b>Trạng thái </b></td>
             <td th:if="${order.getStatus()==0}" class="w3-text-green">ALREADY PAID</td>
             <td th:if="${order.getStatus()==1}" class="w3-text-green">WAITING</td>
             <td th:if="${order.getStatus()==2}" class="w3-text-red">CANCELED</td>

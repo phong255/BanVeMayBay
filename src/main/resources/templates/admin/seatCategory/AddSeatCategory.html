@@ -27,24 +27,24 @@
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:300px;margin-top:43px;background-color: #f1f1f1">
 
-  <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Add flight</h1>
+  <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Thêm mới hạng ghế</h1>
   <form style="padding-left: 20px;" th:method="POST" th:action="@{/admin/addSeatCategory}">
-    <p class="paddingName">categoryName</p>
-    <input type="text" name="categoryName" placeholder="categoryName"/>
+    <p class="paddingName">Tên hạng ghế</p>
+    <input type="text" name="categoryName" placeholder=""/>
 <!--    <p th:if="${categoryName}" class="error">[[${categoryName}]]</p>-->
     <br/>
-    <p class="paddingName">luggageAttach</p>
-    <input type="text" name="luggageAttach" placeholder="luggageAttach"/>
+    <p class="paddingName">Hành lý đi kèm cho hạng ghế</p>
+    <input type="text" name="luggageAttach" placeholder=""/>
 <!--    <p th:if="${luggageAttach}" class="error">[[${luggageAttach}]]</p>-->
     <br/>
-    <p class="paddingName">feeCategory</p>
-    <input type="number" value="0" name="feeCategory" placeholder="feeCategory"/>
+    <p class="paddingName">Phí hạng ghế</p>
+    <input type="number" value="0" name="feeCategory" placeholder=""/>
 <!--    <p th:if="${feeCategory}" class="error">[[${feeCategory}]]</p>-->
     <br/>
     <br/>
-    <button type="submit" value="add">add</button>
+    <button class="btn btn-primary w3-margin" type="submit" value="add">Lưu</button>
   </form>
-  <a href="/admin/seatCategoryList">Seat category list</a>
+  <a href="/admin/seatCategoryList">Danh sách hạng ghế</a>
 </div>
 </body>
 </html>

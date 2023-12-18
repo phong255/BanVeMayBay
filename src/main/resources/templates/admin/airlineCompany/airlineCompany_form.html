@@ -48,7 +48,7 @@
         <h2>[[${pageTitle}]]</h2>
     </div>
 
-    <form th:action="@{/admin/airlineCompanies/save}" method="post" style="max-width: 700px; margin: 0 auto; margin-top: 70px;"
+    <form th:action="@{/admin/airlineCompanies/save}" method="post" style="max-width: 700px; margin: 0 auto; margin-top: 70px;margin-bottom: 20px;"
           enctype="multipart/form-data"
           th:object="${airlineCompany}" onsubmit="return checkEmailUnique(this);">
 
@@ -57,7 +57,7 @@
         <input type="hidden" th:field="*{airlineID}"/>
         <div class="border border-secondary rounded p-3">
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label">Airline Name:</label>
+                <label class="col-sm-4 col-form-label">Tên hãng hàng không:</label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" th:field="*{airlineName}" required minlength="1" maxlength="128" />
                 </div>
@@ -74,8 +74,8 @@
             </div>
 
             <div class="text-center">
-                <input type="submit" value="Save" class="btn btn-primary m-3" />
-                <input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel" style="background-color: #cccccc"/>
+                <input type="submit" value="Lưu" class="btn btn-primary m-3" />
+                <input type="button" value="Hủy bỏ" class="btn btn-secondary" id="buttonCancel" style="background-color: #cccccc"/>
             </div>
         </div>
     </form>

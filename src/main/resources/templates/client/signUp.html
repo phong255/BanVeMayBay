@@ -39,15 +39,15 @@
                 <input name="userid" th:field="*{userID}" type="hidden">
                 <input id="role" name="role" th:field="*{role}" th:type="hidden" th:value="1" class="w3-input w3-border" >
                 <p>
-                    <label>Username</label>
+                    <label>Tên tài khoản</label>
                     <input th:field="*{username}" name="username" class="w3-input w3-border" type="text" required>
                 </p>
                 <p>
-                    <lable>Password</lable>
+                    <lable>Mật khẩu</lable>
                     <input id="password" name="password" th:field="*{password}" class="w3-input w3-border" type="password" required>
                 </p>
                 <p>
-                    <lable>Refill Password</lable>
+                    <lable>Nhập lại mật khẩu</lable>
                     <input name="refill_password" class="w3-input w3-border" type="password" required>
                 </p>
                 <p>
@@ -60,10 +60,10 @@
                 $(document).ready(function (){
                     $.validator.addMethod("passwordRule",function (value,element,args) {
                         return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[A-Za-z0-9])(?=.{8,})/.test(value);
-                    },'Password must contains 1 lowercase letter, one uppercase letter, one digit, one special character and at least 8 characters');
+                    },'Mật khẩu phải chứa ít nhất 1 kí tự thường, 1 kí tự in hoa, 1 kí tự số và có độ dài ít nhất 8 kí tự.');
                     $.validator.addMethod("emailRule",function (value,element,args) {
                         return /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/.test(value);
-                    },'This email is invalid!');
+                    },'Email không đúng định dạng!');
                     $("#form_signup").validate({
                         rules:{
                             username:{
@@ -82,18 +82,19 @@
                         },
                         messages:{
                             username:{
-                                required:"Please enter the username!",
-                                minlength:"Please enter at least 5 characters"
+                                required:"Hãy nhập tên tài khoản của bạn!",
+                                minlength:"Tên tài khoản có độ dài tối thiểu 5 kí tự"
                             },
                             password:{
-                                required:"Please enter the password!",
+                                required:"Hãy nhập mật khẩu của bạn!",
+                                minlength:"Mật khẩu có độ dài ít nhất 8 kí tự"
                             },
                             refill_password:{
-                                required:"Please refill the password!",
-                                equalTo: "Password and refilled password should be matched!"
+                                required:"Hãy nhập lại mật khẩu của bạn!",
+                                equalTo: "Mật khẩu nhập lại không đúng!"
                             },
                             email:{
-                                required:"Please enter your email!"
+                                required:"Hãy nhập địa chỉ email của bạn!"
                             }
                         }
                     });

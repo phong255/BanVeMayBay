@@ -60,7 +60,7 @@ public class AdminController extends AbstractClass {
     }
 
     @PostMapping("/admin/login")
-    public String loginAdmin(HttpServletRequest request, RedirectAttributes redirectAttributes){
+    public String loginAdmin(HttpServletRequest request, RedirectAttributes redirectAttributes,ModelMap modelMap){
         try {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
@@ -88,6 +88,8 @@ public class AdminController extends AbstractClass {
             session.setAttribute("user", user);
             session.setAttribute("username", username);
             session.setAttribute("role", user.getRole());
+            List<User> users = userRepositories.findAll();
+            modelMap.addAttribute("numberOfUserAccount", users.size());
 //            return "redirect:/admin";
             return "/admin/adminIndex";
         } catch (Exception exception){

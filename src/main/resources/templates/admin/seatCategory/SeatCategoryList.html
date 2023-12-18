@@ -44,17 +44,17 @@
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:300px;margin-top:43px;background-color: #f1f1f1">
 
-    <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Seat category list</h1>
+    <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Danh sách hạng ghế</h1>
 
 
     <table class="table">
         <thead>
         <tr>
-            <th><a th:href="@{'/admin/seatCategoryList/page/'+${currentPage}+'?sortBy=seatCategoryId'}">seat category ID</a></th>
-            <th><a th:href="@{'/admin/seatCategoryList/page/'+${currentPage}+'?sortBy=categoryName'}">category name</a></th>
-            <th><a th:href="@{'/admin/seatCategoryList/page/'+${currentPage}+'?sortBy=luggageAttach'}">luggage attach</a></th>
-            <th><a th:href="@{'/admin/seatCategoryList/page/'+${currentPage}+'?sortBy=feeCategory'}">fee category</a></th>
-            <th style="width: 170px;">action</th>
+            <th><a th:href="@{'/admin/seatCategoryList/page/'+${currentPage}+'?sortBy=seatCategoryId'}">ID hạng ghế</a></th>
+            <th><a th:href="@{'/admin/seatCategoryList/page/'+${currentPage}+'?sortBy=categoryName'}">Tên hạng ghế</a></th>
+            <th><a th:href="@{'/admin/seatCategoryList/page/'+${currentPage}+'?sortBy=luggageAttach'}">Hành lý đi kèm</a></th>
+            <th><a th:href="@{'/admin/seatCategoryList/page/'+${currentPage}+'?sortBy=feeCategory'}">Phí hạng ghế</a></th>
+            <th style="width: 170px;">Chức năng</th>
         </tr>
         </thead>
         <tbody>
@@ -66,11 +66,11 @@
                 <td th:utext="${seatCategory.getFormatFeeCategory(seatCategory.getFeeCategory())}">..</td>
                 <td style="display: flex">
                     <button class="update">
-                        <a style="text-decoration: none; color: white;" th:href="@{/admin/updateSeatCategory/{id}(id=${seatCategory.getSeatCategoryID()})}">Update</a>
+                        <a style="text-decoration: none; color: white;" th:href="@{/admin/updateSeatCategory/{id}(id=${seatCategory.getSeatCategoryID()})}">Sửa</a>
                     </button>
 
                     <form class="form-delete" method="POST" th:action="@{/admin/deleteCategorySeat/{id}(id=${seatCategory.getSeatCategoryID()})}">
-                        <button  class="delete" type="submit" onclick="if (!(confirm('Are you sure you want to delete this seat category?'))) return false">Delete</button>
+                        <button  class="delete" type="submit" onclick="if (!(confirm('Bạn có chắc chắn muốn xóa?'))) return false">Xóa</button>
                     </form>
                 </td>
             </tr>
@@ -79,7 +79,7 @@
     </table>
     <div th:replace="~{admin/fragmentsAdmin :: pagination('seatCategoryList', 'seat categories')}"></div>
 
-    <a href="/admin/addSeatCategory">Add new seat category</a>
+    <a href="/admin/addSeatCategory">Thêm mới hạng ghế</a>
 </div>
 </body>
 </html>

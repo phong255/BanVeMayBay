@@ -209,7 +209,7 @@ public class FlightController {
 
     @GetMapping("/flights/takeFlightV2/{fid}&{pid}")
     public String selectedFlight2(@PathVariable(name = "fid")int fid,@PathVariable(name = "pid")int pid,HttpServletRequest request,Model model){
-        SeatCategory sl = sr.getSeatCategoryByCategoryName("business");
+        SeatCategory sl = sr.getSeatCategoryByCategoryName("Thương gia");
         request.getSession().setAttribute("seatClass",sl);
         long adult = 1;
         request.getSession().setAttribute("adults",adult);
@@ -525,6 +525,7 @@ public class FlightController {
             @RequestParam("vnp_TxnRef") String orderCode,
             @RequestParam("vnp_Amount") long totalBill,
             @RequestParam("vnp_ResponseCode") String responseCode,
+            @RequestParam("vnp_TransactionNo") String transNo,
             Model model,
             HttpServletRequest request
     ) throws Exception {
@@ -549,6 +550,7 @@ public class FlightController {
             model.addAttribute("totalBill",totalBill);
             model.addAttribute("pageTitle","Payment Success");
             request.getSession().removeAttribute("flightSelected");
+            request.getSession().setAttribute("transNo",transNo);
             return "client/paySuccess";
         }
         else{
