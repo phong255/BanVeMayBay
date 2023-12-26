@@ -24,33 +24,33 @@ public class ExceptionController implements ErrorController {
         if(status != null){
             Integer statusCode = Integer.valueOf(status.toString());
             if(statusCode == HttpStatus.NOT_FOUND.value()){
-                pageTitle = "Page Not Found";
+                pageTitle = "Không tìm thấy trang";
                 errorPage = "error/404";
                 log.error("Error 404");
 //                Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
 //                log.error(exception.getMessage(),exception);
             } else if(statusCode == HttpStatus.FORBIDDEN.value()){
-                pageTitle = "Internal Server error";
+                pageTitle = "Lỗi hệ thống";
                 errorPage = "error/403";
                 log.error("Error 403");
                 Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
                 log.error(exception.getMessage(),exception);
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-                pageTitle = "Internal Server error";
+                pageTitle = "Lỗi hệ thống";
                 errorPage = "error/500";
                 log.error("Error 500");
                 Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
                 exception.printStackTrace();
             }
             else {
-                pageTitle = "Internal Server error";
+                pageTitle = "Lỗi hệ thống";
                 errorPage = "error/500";
                 log.error("Error 500");
                 Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
                 if(exception == null)
-                    log.info("Have no exception.");
+                    log.info("Không tìm thấy ngoại lệ.");
                 else
-                    log.error(exception.getStackTrace().toString(),exception);
+                    log.error(exception.getMessage(),exception);
             }
         }
         model.addAttribute("pageTitle",pageTitle);

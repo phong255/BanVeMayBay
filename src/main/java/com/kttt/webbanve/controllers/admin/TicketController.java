@@ -79,13 +79,13 @@ public class TicketController {
     }
     @GetMapping("/admin/ticket/qrreader/success")
     public String readersucc(Model model){
-        model.addAttribute("success","Export successfully!");
+        model.addAttribute("success","Xuất vé thành công!");
         return "admin/QrReader";
     }
 
     @GetMapping("/admin/ticket/qrreader/fail")
     public String readerFail(Model model){
-        model.addAttribute("error","This order does not exist or canceled!");
+        model.addAttribute("error","Hóa đơn không tồn tại hoặc đã hủy!");
         return "admin/QrReader";
     }
 }

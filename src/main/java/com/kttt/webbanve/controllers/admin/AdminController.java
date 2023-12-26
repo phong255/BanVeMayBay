@@ -67,19 +67,19 @@ public class AdminController extends AbstractClass {
             HttpSession session = request.getSession();
             User user = userServiceImpl.getAccount(username);
             if(isNullorEmpty(username) || isNullorEmpty(password)){
-                redirectAttributes.addFlashAttribute("message", "Please fill username or password");
+                redirectAttributes.addFlashAttribute("message", "Nhập đủ tên đăng nhập và mật khẩu");
                 return "redirect:/admin/login";
             }
             if(user == null){
-                redirectAttributes.addFlashAttribute("message", "This admin account does not exist");
+                redirectAttributes.addFlashAttribute("message", "Tài khoản admin không tồn tại!");
                 return "redirect:/admin/login";
             }
             if(!bCryptPasswordEncoder.matches(password, user.getPassword())){
-                redirectAttributes.addFlashAttribute("message", "Password is incorrect");
+                redirectAttributes.addFlashAttribute("message", "Sai mật khẩu");
                 return "redirect:/admin/login";
             }
             if(user.getRole()<1) {
-                redirectAttributes.addFlashAttribute("message", "Accept denied");
+                redirectAttributes.addFlashAttribute("message", "Từ chối đăng nhập");
                 return "redirect:/admin/login";
             }
             if(user.getRole() == 2){

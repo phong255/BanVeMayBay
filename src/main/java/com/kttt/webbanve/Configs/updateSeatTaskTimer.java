@@ -3,6 +3,7 @@ package com.kttt.webbanve.Configs;
 import com.kttt.webbanve.models.Seat;
 import com.kttt.webbanve.models.Ticket;
 import com.kttt.webbanve.services.SeatManagerService;
+import com.kttt.webbanve.services.TicketService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +22,16 @@ public class updateSeatTaskTimer extends TimerTask {
     final static Logger logger = LoggerFactory.getLogger(updateSeatTaskTimer.class);
     @Autowired
     SeatManagerService seatManagerService;
-    @Scheduled(fixedDelay = 300L)
+    @Autowired
+    TicketService ticketService;
+    @Scheduled(fixedDelay = 10000L)
     @Override
-    public void run() {
-        ArrayList<Seat> seats = seatManagerService.getAllSeats();
+    public void run() { // Cập nhật trang thái ghế
         try {
-            seatManagerService.updateSeat(seats);
+            ArrayList<Ticket> ticketsWaiting = ticketService.getTicketsWaiting();
+            seatManagerService.updateSeat(ticketsWaiting);
         } catch (ParseException e) {
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(),e.getCause());
         }
     }
 }

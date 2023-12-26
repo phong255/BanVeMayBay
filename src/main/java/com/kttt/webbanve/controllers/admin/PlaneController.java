@@ -102,15 +102,15 @@ public class PlaneController extends AbstractClass {
 
         try{
             if(isNullorEmpty(plane.getPlane_name().trim())) {
-                redirectAttributes.addFlashAttribute("planeName", "planeName is cannot be null");
+                redirectAttributes.addFlashAttribute("planeName", "Tên máy bay không được để trống!");
                 return "redirect:/admin/addPlane";
             }
             if(slSeat.isEmpty() || slSeat.equals(null) || slSeat.equals("")) {
-                redirectAttributes.addFlashAttribute("quantitySeat", "quantitySeat is cannot be null");
+                redirectAttributes.addFlashAttribute("quantitySeat", "Số lượng ghế không được để trống!");
                 return "redirect:/admin/addPlane";
             }
             if(Integer.parseInt(slSeat)<1) {
-                redirectAttributes.addFlashAttribute("quantitySeat", "quantitySeat is higher 0");
+                redirectAttributes.addFlashAttribute("quantitySeat", "Số lượng ghế ngồi phải lớn hơn 0!");
                 return "redirect:/admin/addPlane";
             }
             plane.setQuantity(Integer.parseInt(slSeat));
@@ -160,7 +160,7 @@ public class PlaneController extends AbstractClass {
                     foundPlane.setPlane_name(plane.getPlane_name());
                 }
                 else if(isNullorEmpty(plane.getPlane_name().trim())) {
-                    redirectAttributes.addFlashAttribute("planeName", "planeName is cannot be null");
+                    redirectAttributes.addFlashAttribute("planeName", "Tên máy bay không được để trống");
                     return "redirect:/admin/updatePlane/{planeID}";
                 }
 
@@ -168,7 +168,7 @@ public class PlaneController extends AbstractClass {
                     foundPlane.setQuantity(Integer.parseInt(slSeat));
                 }
                 else if(Integer.parseInt(slSeat)<1) {
-                    redirectAttributes.addFlashAttribute("quantitySeat", "quantitySeat is higher 0");
+                    redirectAttributes.addFlashAttribute("quantitySeat", "Số lượng ghế phải lớn hơn 0");
                     return "redirect:/admin/updatePlane/{planeID}";
                 }
 

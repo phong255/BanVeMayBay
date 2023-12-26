@@ -56,12 +56,12 @@
 <!--            <th><a th:href="@{'/admin/ticketList/page/' + ${currentPage} + '?sortBy=planeFlight.flight.departingForm'}">flight router</a></th>-->
 <!--            <th><a th:href="@{'/admin/ticketList/page/' + ${currentPage} + '?sortBy=order.date'}">date</a></th>-->
 <!--            <th><a th:href="@{'/admin/ticketList/page/' + ${currentPage} + '?sortBy=customer.fullName'}">customer name</a></th>-->
-            <th th:replace="~{admin/fragmentsAdmin :: column_link('ticketID', 'ticket ID', 'ticketList')}"></th>
-            <th th:replace="~{admin/fragmentsAdmin :: column_link('airfares', 'airfares', 'ticketList')}"></th>
-            <th th:replace="~{admin/fragmentsAdmin :: column_link('luggage.weight', 'weight', 'ticketList')}"></th>
-            <th th:replace="~{admin/fragmentsAdmin :: column_link('flight.departingForm', 'flight router', 'ticketList')}"></th>
-            <th th:replace="~{admin/fragmentsAdmin :: column_link('sortBy=order.date', 'date', 'ticketList')}"></th>
-            <th th:replace="~{admin/fragmentsAdmin :: column_link('customer.fullName', 'customer name', 'ticketList')}"></th>
+            <th th:replace="~{admin/fragmentsAdmin :: column_link('ticketID', 'ID', 'ticketList')}"></th>
+            <th th:replace="~{admin/fragmentsAdmin :: column_link('airfares', 'Phí vé', 'ticketList')}"></th>
+            <th th:replace="~{admin/fragmentsAdmin :: column_link('luggage.weight', 'Hành lý', 'ticketList')}"></th>
+            <th th:replace="~{admin/fragmentsAdmin :: column_link('flight.departingForm', 'Lịch trình bay', 'ticketList')}"></th>
+            <th th:replace="~{admin/fragmentsAdmin :: column_link('sortBy=order.date', 'Ngày khởi hành', 'ticketList')}"></th>
+            <th th:replace="~{admin/fragmentsAdmin :: column_link('customer.fullName', 'Tên khách hàng', 'ticketList')}"></th>
 
 <!--            <th>action</th>-->
         </tr>

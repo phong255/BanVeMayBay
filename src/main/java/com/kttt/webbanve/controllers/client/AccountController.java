@@ -35,13 +35,13 @@ public class AccountController {
 
     @GetMapping("/account")
     public String goToLogin(Model model){
-        model.addAttribute("pageTitle","Login");
+        model.addAttribute("pageTitle","Đăng nhập");
         return "client/login";
     }
     @GetMapping("/account/signup")
     public String goToSignUp(Model model){
         model.addAttribute("user",new User());
-        model.addAttribute("pageTitle","Sign up");
+        model.addAttribute("pageTitle","Đăng kí");
         return "client/signUp";
     }
     @PostMapping("/account/signup/save")
@@ -56,13 +56,13 @@ public class AccountController {
                 cus.setEmail(email);
                 cu.createCustomer(cus);
                 us.addAccount(user);
-                ra.addFlashAttribute("messageSuccess","Sign up success !");
+                ra.addFlashAttribute("messageSuccess","Đăng kí thành công !");
             }
             else
-                ra.addFlashAttribute("messageError","The password refilled is incorrect !");
+                ra.addFlashAttribute("messageError","Nhập lại sai mật khẩu !");
         }
         else{
-            ra.addFlashAttribute("messageError","This username has been used !");
+            ra.addFlashAttribute("messageError","Tên đăng nhập đã tồn tại !");
         }
         return "redirect:/account/signup";
     }
@@ -83,19 +83,19 @@ public class AccountController {
             u = cu.getCustomer(username);
             if(u != null){
                 if(bCryptPasswordEncoder.matches(password,u.getUser().getPassword())){
-                    model.addAttribute("pageTitle","Homepage");
-                    model.addAttribute("messageLogin","Login success!");
+                    model.addAttribute("pageTitle","Trang chủ");
+                    model.addAttribute("messageLogin","Đăng nhập thành công!");
                     request.getSession().setAttribute("customer",u);
                     model.addAttribute("customer",u);
                     return "client/index";
                 }
                 else{
-                    ra.addFlashAttribute("message","The password is incorrect !");
+                    ra.addFlashAttribute("message","Sai mật khẩu !");
                     return "redirect:/account";
                 }
             }
             else {
-                ra.addFlashAttribute("message","This account does not exist !");
+                ra.addFlashAttribute("message","Tài khoản không tồn tại !");
                 return "redirect:/account";
             }
 
@@ -108,7 +108,7 @@ public class AccountController {
 
     @GetMapping("/account/information/{customerID}")
     public String infoPage(@PathVariable("customerID") Integer cid,Model model){
-        model.addAttribute("pageTitle","Personal information");
+        model.addAttribute("pageTitle","Thông tin cá nhân");
         Customer customer = cu.getByID(cid);
         model.addAttribute("customer",customer);
         return "client/personalInformation";
@@ -119,11 +119,11 @@ public class AccountController {
             Integer cid =  customer.getCustomerID();
         try{
             if(bindingResult.hasErrors()){
-                ra.addFlashAttribute("message","Updated information Fail!");
+                ra.addFlashAttribute("message","Cập nhật không thành công!");
             }
             else{
                 cu.updateCustomer(customer,cid);
-                ra.addFlashAttribute("message","Updated successfully!");
+                ra.addFlashAttribute("message","Cập nhật thành công!");
             }
             return "redirect:/account/information/"+cid;
 
@@ -137,10 +137,10 @@ public class AccountController {
     @GetMapping("/account/changeForm")
     public String changeForm(Model model,HttpServletRequest request){
         if(request.getSession().getAttribute("customer") == null) {
-            model.addAttribute("pageTitle","Homepage");
+            model.addAttribute("pageTitle","Trang chủ");
             return "client/index";
         }
-        model.addAttribute("pageTitle","Personal information");
+        model.addAttribute("pageTitle","Thông tin cá nhân");
         return "client/changingPassword";
     }
 
@@ -148,17 +148,17 @@ public class AccountController {
     public String changePass(Model model,HttpServletRequest request) throws MessagingException, IOException {
         User user_exist = us.getAccount(request.getParameter("username"));
         if(user_exist == null){
-            model.addAttribute("error","User no found!");
-            model.addAttribute("pageTitle","Personal information");
+            model.addAttribute("error","Tài khoản không tồn tại!");
+            model.addAttribute("pageTitle","Thông tin cá nhân");
             return "client/changingPassword";
         }
         user_exist.setPassword(bCryptPasswordEncoder.encode(request.getParameter("password")));
         int confirmCode = new Random().nextInt(100001,999999);
-        mailSenderService.sendMailMessage(request.getParameter("email"),String.valueOf(confirmCode),"GOGO - Confirm your changing password");
+        mailSenderService.sendMailMessage(request.getParameter("email"),String.valueOf(confirmCode),"GOGO - Mã xác nhận yêu cầu đổi mật khẩu ");
         request.getSession().setAttribute("confirmCode",confirmCode);
         request.getSession().setAttribute("userChange",user_exist);
-        model.addAttribute("confirm","Input the confirm code");
-        model.addAttribute("pageTitle","Personal information");
+        model.addAttribute("confirm","Nhập mã xác nhận");
+        model.addAttribute("pageTitle","Thông tin cá nhân");
         return "client/changingPassword";
     }
 
@@ -166,17 +166,17 @@ public class AccountController {
     public String confirmChange(Model model,HttpServletRequest request){
         String code = request.getParameter("confirmCode");
         if(!code.equals(request.getParameter("confirmCode"))){
-            model.addAttribute("error","Incorrect!");
-            model.addAttribute("confirm","Input the confirm code");
-            model.addAttribute("pageTitle","Personal information");
+            model.addAttribute("error","Mã xác nhận không đúng!");
+            model.addAttribute("confirm","Nhập mã xác nhận");
+            model.addAttribute("pageTitle","Thông tin cá nhân");
             return "client/changingPassword";
         }
         User user = (User) request.getSession().getAttribute("userChange");
         us.save(user);
         request.getSession().removeAttribute("userChange");
         request.getSession().removeAttribute("confirmCode");
-        model.addAttribute("success","success");
-        model.addAttribute("pageTitle","Personal information");
+        model.addAttribute("success","Đổi mật khẩu thành công");
+        model.addAttribute("pageTitle","Thông tin cá nhân");
         return "client/changingPassword";
     }
 
@@ -185,16 +185,16 @@ public class AccountController {
         String email = req.getParameter("email-ads");
         Customer customer;
         if(email.trim().isEmpty()){
-            model.addAttribute("error","Input your email !");
+            model.addAttribute("error","Nhập địa chỉ email của bạn!");
         }
         else {
             customer  = cu.getCustomerByEmail(email);
             if(customer != null){
-                model.addAttribute("error","Already exist !");
+                model.addAttribute("error","Email đã tồn tại !");
             }
-            model.addAttribute("success","Success");
+            model.addAttribute("success","Đăng kí thành công");
         }
-        model.addAttribute("pageTitle","Homepage");
+        model.addAttribute("pageTitle","Trang chủ");
         return "client/index";
     }
 }

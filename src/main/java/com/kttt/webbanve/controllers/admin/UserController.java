@@ -123,7 +123,7 @@ public class UserController {
             user.setPassword(request.getParameter("password"));
             user.setRole(Integer.parseInt(request.getParameter("role")));
             userService.addAccount(user);
-            ra.addFlashAttribute("success","Add success");
+            ra.addFlashAttribute("success","Thêm thành công");
             return "redirect:/admin/addUser";
         }catch (Exception e){
             e.printStackTrace();

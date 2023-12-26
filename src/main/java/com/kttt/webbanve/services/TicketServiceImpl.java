@@ -1,5 +1,6 @@
 package com.kttt.webbanve.services;
 
+import com.kttt.webbanve.TimeUtil;
 import com.kttt.webbanve.models.Ticket;
 import com.kttt.webbanve.payload.*;
 import com.kttt.webbanve.repositories.StatisticsRepoCustomImpl;
@@ -11,7 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -63,6 +67,18 @@ public class TicketServiceImpl implements TicketService{
     @Override
     public ArrayList<Ticket> getTicketsByOrderID(int oid) {
         return ticketRepository.getTicketsByOrder_OrderID(oid);
+    }
+
+    @Override
+    public ArrayList<Ticket> getTicketsWaiting() throws ParseException {
+        Date now = Calendar.getInstance().getTime();
+        ArrayList<Ticket> tickets = (ArrayList<Ticket>) ticketRepository.findAll();
+        ArrayList<Ticket> ticketsWaiting = new ArrayList<>();
+        for(Ticket t : tickets){
+            if(TimeUtil.stringToDate(t.getFlight().getDateFlight()).compareTo(now) > 0)
+                ticketsWaiting.add(t);
+        }
+        return ticketsWaiting;
     }
 
 

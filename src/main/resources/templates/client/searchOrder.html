@@ -51,6 +51,7 @@
 <div  class="w3-content w3-margin-top w3-center" style="display:flex;justify-content: space-around;max-width:1400px;height: 280px;">
     <div style="width: 40%;">
         <!--Scanner-->
+        <div class="w3-panel w3-text-blue-gray w3-leftbar w3-border-blue w3-pale-blue guide" style=""><p>Yêu cầu cho phép sử dụng camera của thiết bị để quét mã QR.</p></div>
         <div class="w3-card" style="width: 100%;" id="reader"></div>
         <div style="display: flex;justify-content: center"><p class="w3-red w3-card" id="error"></p></div>
         <div class="w3-panel w3-text-red w3-leftbar w3-border-red w3-pale-red" th:if="${error}" th:text="${error}"></div>

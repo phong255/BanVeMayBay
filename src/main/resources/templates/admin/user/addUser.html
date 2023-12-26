@@ -27,25 +27,25 @@
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:300px;margin-top:43px;background-color: #f1f1f1">
 
-    <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Add user</h1>
+    <h1 style="font-weight: bold; font-size: 25px; padding: 25px 15px">Tạo tài khoản</h1>
     <form id="add_User" style="padding-left: 20px;" th:method="POST" th:action="@{/admin/addUser/save}">
         <br/>
-        <p class="paddingName">username</p>
-        <input type="text" name="username" placeholder="username"/>
+        <p class="paddingName">Tên tài khoản</p>
+        <input type="text" name="username" placeholder=""/>
         <br/>
-        <p class="paddingName">password</p>
+        <p class="paddingName">Mật khẩu</p>
         <input type="password" name="password"/>
         <br/>
-        <p class="paddingName">role</p>
+        <p class="paddingName">Vai trò</p>
         <select name="role">
-            <option th:value="0" th:text="USER"></option>
-            <option th:value="1" th:text="EMPLOYEE"></option>
-            <option th:value="2" th:text="MANAGER"></option>
+            <option th:value="0"><span>KHÁCH HÀNG</span></option>
+            <option th:value="1"><span>NHÂN VIÊN</span></option>
+            <option th:value="2"><span>QUẢN LÝ</span></option>
         </select>
         <br/>
-        <button type="submit" value="add">Save</button>
+        <button class="btn btn-primary w3-margin-top" type="submit" value="add">Lưu</button>
     </form>
-    <a href="/admin/userList">User list</a>
+    <a class="" href="/admin/userList">Danh sách tài khoản</a>
     <script>
         $(document).ready(function (){
             $.validator.addMethod("passwordRule",function (value,element,args) {

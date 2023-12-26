@@ -88,32 +88,32 @@ public class FlightAdminController {
         String feeFlightx = request.getParameter("feeFlightx");
         try {
             if(flight.getDepartingFrom().trim().equals("")){
-                redirectAttributes.addFlashAttribute("departingForm", "DepartingForm cannot be null");
+                redirectAttributes.addFlashAttribute("departingForm", "Điểm khởi hành không được để trống!");
                 return "redirect:/admin/addFlight";
             }
             if(flight.getArrivingAt().trim().equals("")) {
-                redirectAttributes.addFlashAttribute("arrivingAt", "Arriving at cannot be null");
+                redirectAttributes.addFlashAttribute("arrivingAt", "Điểm đến không được để trống!");
                 return "redirect:/admin/addFlight";
             }
             if(flight.getFlightTime().trim().equals("")) {
-                redirectAttributes.addFlashAttribute("flightTime", "Flight time is cannot be null");
+                redirectAttributes.addFlashAttribute("flightTime", "Giờ bay không được để trống!");
                 return "redirect:/admin/addFlight";
             } else if (Integer.parseInt(flight.getFlightTime())<1) {
-                redirectAttributes.addFlashAttribute("flightTime", "Flight time is higher 0");
+                redirectAttributes.addFlashAttribute("flightTime", "Giờ bay phải lớn hơn 0!");
                 return "redirect:/admin/addFlight";
             }
             if(flight.getDepartureTime().trim().equals("")) {
-                redirectAttributes.addFlashAttribute("departureTime", "Departure time is cannot be null");
+                redirectAttributes.addFlashAttribute("departureTime", "Giờ khởi hành không được để trống!");
                 return "redirect:/admin/addFlight";
             } else if (Integer.parseInt(flight.getDepartureTime())<1) {
-                redirectAttributes.addFlashAttribute("departureTime", "Departure time is higher 0");
+                redirectAttributes.addFlashAttribute("departureTime", "Giờ khởi hành phải lớn hơn 0!");
                 return "redirect:/admin/addFlight";
             }
             if(feeFlightx.equals("")) {
-                redirectAttributes.addFlashAttribute("feeFlight", "Fee flight cannot be null");
+                redirectAttributes.addFlashAttribute("feeFlight", "Phí chuyến bay không được để trống!");
                 return "redirect:/admin/addFlight";
             } else if(Integer.parseInt(feeFlightx)<=0) {
-                redirectAttributes.addFlashAttribute("feeFlight", "Fee flight is higher 0");
+                redirectAttributes.addFlashAttribute("feeFlight", "Phí chuyến bay phải lớn hơn 0!");
                 return "redirect:/admin/addFlight";
             }
             flight.setFeeFlight(Long.parseLong(feeFlightx));
@@ -148,36 +148,36 @@ public class FlightAdminController {
             if(flightService.findById(flightId).isPresent()) {
                 Flight foundFlight = flightService.findById(flightId).get();
                 if(flight.getDepartingFrom().trim().equals("")){
-                    redirectAttributes.addFlashAttribute("departingForm", "DepartingForm cannot be null");
+                    redirectAttributes.addFlashAttribute("departingForm", "Điểm khởi hành không được để trống!");
                     return "redirect:/admin/updateFlight/{flightId}";
                 }
 
                 if(flight.getArrivingAt().trim().equals("")) {
-                    redirectAttributes.addFlashAttribute("arrivingAt", "Arriving at cannot be null");
+                    redirectAttributes.addFlashAttribute("arrivingAt", "Điểm đến không được để trống!");
                     return "redirect:/admin/updateFlight/{flightId}";
                 }
 
                 if(flight.getFlightTime().trim().equals("")) {
-                    redirectAttributes.addFlashAttribute("flightTime", "Flight time is cannot be null");
+                    redirectAttributes.addFlashAttribute("flightTime", "Giờ bay không được để trống!");
                     return "redirect:/admin/updateFlight/{flightId}";
                 } else if (Integer.parseInt(flight.getFlightTime())<1) {
-                    redirectAttributes.addFlashAttribute("flightTime", "Flight time is higher 0");
+                    redirectAttributes.addFlashAttribute("flightTime", "Giờ bay phải lớn hơn 0!");
                     return "redirect:/admin/updateFlight/{flightId}";
                 }
 
                 if(flight.getDepartureTime().trim().equals("")) {
-                    redirectAttributes.addFlashAttribute("departureTime", "Departure time is cannot be null");
+                    redirectAttributes.addFlashAttribute("departureTime", "Giờ khởi hành không được để trống!");
                     return "redirect:/admin/updateFlight/{flightId}";
                 } else if (Integer.parseInt(flight.getDepartureTime())<1) {
-                    redirectAttributes.addFlashAttribute("departureTime", "Departure time is higher 0");
+                    redirectAttributes.addFlashAttribute("departureTime", "Giờ khởi hành phải lớn hơn 0!");
                     return "redirect:/admin/updateFlight/{flightId}";
                 }
 
                 if(feeFlightx.equals("")) {
-                    redirectAttributes.addFlashAttribute("feeFlight", "Fee flight cannot be null");
+                    redirectAttributes.addFlashAttribute("feeFlight", "Phí chuyến bay không được để trống!");
                     return "redirect:/admin/updateFlight/{flightId}";
                 } else if(Integer.parseInt(feeFlightx)<=0) {
-                    redirectAttributes.addFlashAttribute("feeFlight", "Fee flight is higher 0");
+                    redirectAttributes.addFlashAttribute("feeFlight", "Phí chuyến bay phải lớn hơn 0!");
                     return "redirect:/admin/updateFlight/{flightId}";
                 }
                 foundFlight.setDepartingFrom(flight.getDepartingFrom());

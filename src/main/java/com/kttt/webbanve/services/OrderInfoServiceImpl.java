@@ -88,7 +88,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 
     @Override
     @Scheduled(fixedDelay = 5000)
-    public void updateOrderStatus() {
+    public void updateOrderStatus() {   //Tự động hủy hóa đơn sau 72 giờ
         Calendar calendar = Calendar.getInstance();
         ArrayList<OrderInfo> orders = getAllOrders();
         for(OrderInfo orderInfo : orders){

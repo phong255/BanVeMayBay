@@ -73,7 +73,7 @@ public class AirlineCompanyController {
         AirlineCompany airlineCompany = new AirlineCompany();
 
         model.addAttribute("airlineCompany", airlineCompany);
-        model.addAttribute("pageTitle", "Add new airlineCompany");
+        model.addAttribute("pageTitle", "Thêm mới hãng hàng không");
         return "admin/airlineCompany/airlineCompany_form";
     }
 
@@ -95,7 +95,7 @@ public class AirlineCompanyController {
             as.save(airlineCompany);
         }
 
-        redirectAttributes.addFlashAttribute("message", "The airline company has been saved successfully!");
+        redirectAttributes.addFlashAttribute("message", "Lưu thành công!");
 
         return getRedirectURLtoAfterAirlineCompany(airlineCompany);
     }
@@ -113,7 +113,7 @@ public class AirlineCompanyController {
             AirlineCompany airlineCompany = as.get(id);
 
             model.addAttribute("airlineCompany", airlineCompany);
-            model.addAttribute("pageTitle", "Edit airlineCompany (ID: " + id + ")");
+            model.addAttribute("pageTitle", "Chỉnh sửa hãng hàng không (ID: " + id + ")");
 
             return "admin/airlineCompany/airlineCompany_form";
         } catch (AirlineCompanyNotFoundException e) {
@@ -131,8 +131,8 @@ public class AirlineCompanyController {
 
             String acDir = "./airlineCompany-photos/" + id;
             FileUploadUtil.removeDir(acDir);
-            redirectAttributes.addFlashAttribute("message", "The airline company ID " + id +
-                    " has been deleted successfully");
+            redirectAttributes.addFlashAttribute("message", "Hãng hàng không ID " + id +
+                    " đã được xóa!");
         } catch (AirlineCompanyNotFoundException e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
         }

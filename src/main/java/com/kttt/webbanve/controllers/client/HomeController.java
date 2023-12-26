@@ -14,7 +14,7 @@ public class HomeController {
     SeatCategoryRepositories seatCategoryRepositories;
     @GetMapping("/")
     public String index(Model model, HttpServletRequest req){
-        model.addAttribute("pageTitle","Homepage");
+        model.addAttribute("pageTitle","Trang chủ");
         req.getSession().setAttribute("seatCategories", seatCategoryRepositories.findAll());
         return "client/index";
     }

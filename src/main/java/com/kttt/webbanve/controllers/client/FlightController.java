@@ -58,7 +58,7 @@ public class FlightController {
     @GetMapping("/flights")
     public String listFlight(Model model,HttpServletRequest request){
         ArrayList<Flight> flights = (ArrayList<Flight>) flightService.getAllFlights();
-        model.addAttribute("pageTitle","Flights");
+        model.addAttribute("pageTitle","Danh sách chuyến bay");
         model.addAttribute("list_flight",flights);
         if(request.getSession().getAttribute("seatClass") != null){
             SeatCategory sl = (SeatCategory) request.getSession().getAttribute("seatClass");
@@ -106,12 +106,12 @@ public class FlightController {
             txtChild = 0;
         String rd = request.getParameter("rdCategoryTicket");
         SeatCategory sl = sr.getSeatCategoryByCategoryName(request.getParameter("slSeatClass"));
-        model.addAttribute("pageTitle","Flights");
+        model.addAttribute("pageTitle","Danh sách chuyến bay");
         if(rd.equals("rt")){
             Page<Flight> flights1 = flightService.findFlightByForm(date_flight,departing_from,arriving_at,1);
             Page<Flight> flights2 = flightService.findFlightByForm(date_return,arriving_at,departing_from,1);
             if(flights1.isEmpty() || flights2.isEmpty()){
-                model.addAttribute("error","No flight can be found !");
+                model.addAttribute("error","Không tìm thấy chuyến bay !");
                 return "client/listFlights";
             }
             Page<PlaneFlight> planeFlightPage1 = planeFlightService.getAllFlight(flights1.getContent().get(0).getFlightID(),1);
@@ -142,7 +142,7 @@ public class FlightController {
         else{
             Page<Flight> flights = flightService.findFlightByForm(date_flight,departing_from,arriving_at,1);
             if(flights.isEmpty()){
-                model.addAttribute("error","No flight can be found !");
+                model.addAttribute("error","Không tìm thấy chuyến bay !");
                 return "client/listFlights";
             }
             Page<PlaneFlight> planeFlightPage = planeFlightService.getAllFlight(flights.getContent().get(0).getFlightID(),1);
@@ -176,7 +176,7 @@ public class FlightController {
         Page<PlaneFlight> planeFlightPage = planeFlightService.getAllFlight(flights.getContent().get(0).getFlightID(),pageNumber);
         if(planeFlightPage.getNumberOfElements() > 0)
             request.getSession().setAttribute("planes",planeFlightService.convertToListFlight(planeFlightPage.getContent()));
-        model.addAttribute("pageTitle","Flights");
+        model.addAttribute("pageTitle","Danh sách chuyến bay");
         model.addAttribute("pageNum",pageNumber);
         return "client/listFlights";
     }
@@ -193,7 +193,7 @@ public class FlightController {
         Page<PlaneFlight> planeFlightPage2 = planeFlightService.getAllFlight(flights2.getContent().get(0).getFlightID(),pageNumber);
         request.getSession().setAttribute("planes1",planeFlightService.convertToListFlight(planeFlightPage1.getContent()));
         request.getSession().setAttribute("planes2",planeFlightService.convertToListFlight(planeFlightPage2.getContent()));
-        model.addAttribute("pageTitle","Flights");
+        model.addAttribute("pageTitle","Danh sách chuyến bay");
         model.addAttribute("pageNum",pageNumber);
         return "client/listFlights";
     }
@@ -229,7 +229,7 @@ public class FlightController {
         flightSelected.add(fs);
         request.getSession().setAttribute("flightSelected", flightSelected);
         request.getSession().setAttribute("totalBill",(long)(totalFee(flightSelected)*(adult + child*0.8) + sl.getFeeCategory()*(adult + child)));
-        model.addAttribute("pageTitle","Flights");
+        model.addAttribute("pageTitle","Danh sách chuyến bay");
         return "client/listFlights";
     }
 
@@ -251,14 +251,14 @@ public class FlightController {
             else{
                 ArrayList<FlightSelected> flightSelected = (ArrayList<FlightSelected>) request.getSession().getAttribute("flightSelected");
                 if(flightSelected.size()>1){
-                    model.addAttribute("error","Cant select more than 2 flights!");
+                    model.addAttribute("error","Không thể chọn nhiều hơn 2 chuyến bay!");
                 }
                 else{
                     for (FlightSelected fl :
                             flightSelected) {
                         if(fl.getFlight().getFlightID() == fid) {
-                            model.addAttribute("error", "This flight has been selected!");
-                            model.addAttribute("pageTitle","Flights");
+                            model.addAttribute("error", "Chuyến bay đã được chọn!");
+                            model.addAttribute("pageTitle","Danh sách chuyến bay");
                             return "client/listFlights";
                         }
                     }
@@ -273,7 +273,7 @@ public class FlightController {
             if(request.getSession().getAttribute("flightSelected") != null){
                 ArrayList<FlightSelected> flightSelected = (ArrayList<FlightSelected>) request.getSession().getAttribute("flightSelected");
                 if(flightSelected.size()>0) {
-                    model.addAttribute("error", "Cant select more than 1 flight!");
+                    model.addAttribute("error", "Xóa lựa để chọn lại!");
                 }
                 else{
                     FlightSelected fs = new FlightSelected();
@@ -290,7 +290,7 @@ public class FlightController {
                 request.getSession().setAttribute("flightSelected", flightSelected);
             }
         }
-        model.addAttribute("pageTitle","Flights");
+        model.addAttribute("pageTitle","Danh sách chuyến bay");
         return "client/listFlights";
     }
 
@@ -323,11 +323,11 @@ public class FlightController {
                 }
             }
             request.getSession().setAttribute("flightSelected",flightSelected);
-            model.addAttribute("pageTitle","Flights");
+            model.addAttribute("pageTitle","Danh sách chuyến bay");
         }
         catch (Exception e){
             model.addAttribute("error",e.getMessage());
-            model.addAttribute("pageTitle","Flights");
+            model.addAttribute("pageTitle","Danh sách chuyến bay");
         }
         return "client/listFlights";
     }
@@ -336,11 +336,11 @@ public class FlightController {
     public String goToInfor(Model model,HttpServletRequest request){
         ArrayList<FlightSelected> flightSelecteds = (ArrayList<FlightSelected>) request.getSession().getAttribute("flightSelected");
         if(flightSelecteds.size() < 2 && request.getSession().getAttribute("categoryTicket") != null){
-            model.addAttribute("pageTitle","Flights");
-            model.addAttribute("error","Have to select 2 flight !");
+            model.addAttribute("pageTitle","Danh sách chuyến bay");
+            model.addAttribute("error","Bạn phải chọn 2 chuyến bay!");
             return "client/listFlights";
         }
-        model.addAttribute("pageTitle","Passenger's information");
+        model.addAttribute("pageTitle","Thông tin hành khách");
         long quanAdults = (long)request.getSession().getAttribute("adults") + (long)request.getSession().getAttribute("child");
         ArrayList<Integer> adults = new ArrayList<>();
         //---total-bill-----
@@ -370,8 +370,8 @@ public class FlightController {
                 String birthday = request.getParameter("birthday"+i);
                 String email = request.getParameter("email"+i);
                 if(cr.getCustomerByEmail(email)!=null){
-                    model.addAttribute("pageTitle","Select seat");
-                    ra.addFlashAttribute("error","Email "+ email +" does exist !");
+                    model.addAttribute("pageTitle","Chọn ghế ngồi");
+                    ra.addFlashAttribute("error","Email "+ email +" đã tồn tại !");
                     return "redirect:/flights/fillInfor";
                 }
                 String phone = request.getParameter("phone"+i);
@@ -398,7 +398,7 @@ public class FlightController {
             }
             request.getSession().setAttribute("flightSelected",flightSelected_new);
             request.getSession().setAttribute("totalBill",totalBill);
-            model.addAttribute("pageTitle","Select seat");
+            model.addAttribute("pageTitle","Chọn ghế ngồi");
             SeatCategory category = (SeatCategory) request.getSession().getAttribute("seatClass");
             for (FlightSelected f :
                     flightSelected_new) {
@@ -427,20 +427,20 @@ public class FlightController {
         Flight flight = fr.getFlightByFlightID(fid);
         int dem = 0;
         if(seat.getStatus() > 0){
-            model.addAttribute("error","This seat has been selected!");
-            model.addAttribute("pageTitle","Select seat");
+            model.addAttribute("error","Ghế đã được đặt!");
+            model.addAttribute("pageTitle","Chọn ghế ngồi");
             return "client/selectSeat";
         }
 
         for(FlightSelected f : flightSelecteds){
             if (f.getSeat() != null && sid == f.getSeat().getSeatID()) {
-                model.addAttribute("error", "Has been selected!");
-                model.addAttribute("pageTitle","Select seat");
+                model.addAttribute("error", "Ghế đã được đặt!");
+                model.addAttribute("pageTitle","Chọn ghế ngồi");
                 return "client/selectSeat";
             }
             if(f.getSeat() != null) {
                 if (f.getFlight().getDepartingFrom().equals(flight.getDepartingFrom()) && f.getFlight().getArrivingAt().equals(flight.getArrivingAt()) && f.getCustomer().getEmail().equals(cemail)) {
-                    model.addAttribute("error", "Has been selected!");
+                    model.addAttribute("error", "Ghế đã được đặt!");
                     model.addAttribute("pageTitle","Select seat");
                     return "client/selectSeat";
                 }
@@ -461,10 +461,10 @@ public class FlightController {
             }
         }
         if(dem == flightSelecteds.size())
-            model.addAttribute("error","Enough seat!");
+            model.addAttribute("error","Xóa lựa chọn cũ để chọn lại!");
         request.getSession().setAttribute("flightSelected",flightSelecteds);
         model.addAttribute("seatPo",sid);
-        model.addAttribute("pageTitle","Select seat");
+        model.addAttribute("pageTitle","Chọn ghế ngồi");
         return "client/selectSeat";
     }
     @GetMapping("/flights/changeInfo/{sid}")
@@ -488,7 +488,7 @@ public class FlightController {
             }
         }
         request.getSession().setAttribute("flightSelected",flightSelecteds);
-        model.addAttribute("pageTitle","Select seat");
+        model.addAttribute("pageTitle","Chọn ghế ngồi");
         return "client/selectSeat";
     }
 
@@ -499,14 +499,14 @@ public class FlightController {
         for (FlightSelected f :
                 flightSelecteds) {
             if(f.getSeat() == null){
-                model.addAttribute("error","Take at least "+flightSelecteds.size()+" seats!");
+                model.addAttribute("error","Chọn ít nhất "+flightSelecteds.size()+" ghế ngồi!");
                 for (Plane p :
                         f.getFlight().getPlanes()) {
                     ArrayList<Seat> seats = seatRepositoriesr.getSeatsBySeatCategory_CategoryNameAndPlane_PlaneID(sl.getCategoryName(),p.getPlaneID());
                     f.setSeats(seats);
                 }
                 request.getSession().setAttribute("flightSelected",flightSelecteds);
-                model.addAttribute("pageTitle","Select seat");
+                model.addAttribute("pageTitle","Chọn ghế ngồi");
                 return "client/selectSeat";
             }
         }
@@ -516,7 +516,7 @@ public class FlightController {
             seat.setStatus(2);
             seatRepositoriesr.save(seat);
         }
-        model.addAttribute("pageTitle","Payment");
+        model.addAttribute("pageTitle","Thanh toán");
         return "client/payment";
     }
 
@@ -548,7 +548,7 @@ public class FlightController {
             mss.sendMailWithAttachment(order.getCustomer().getEmail(),"Cảm ơn bạn đã tin tưởng đặt vé tại đại lý GOGO !\nXem chi tiết đơn hàng phía dưới.","Chi tiết đơn hàng",order.getQrCode());
             model.addAttribute("order",order);
             model.addAttribute("totalBill",totalBill);
-            model.addAttribute("pageTitle","Payment Success");
+            model.addAttribute("pageTitle","Thanh toán thành công");
             request.getSession().removeAttribute("flightSelected");
             request.getSession().setAttribute("transNo",transNo);
             return "client/paySuccess";
@@ -572,7 +572,7 @@ public class FlightController {
             model.addAttribute("tickets",request.getSession().getAttribute("tickets"));
             request.getSession().removeAttribute("order");
             request.getSession().removeAttribute("tickets");
-            model.addAttribute("success","success");
+            model.addAttribute("success","Thành công");
         }
         model.addAttribute("pageTitle","Cancel flights");
         return "client/searchOrder";
@@ -591,8 +591,8 @@ public class FlightController {
 
     @GetMapping("/flights/showOrder/fail")
     public String showFail(Model model){
-        model.addAttribute("error","Order does not exist!");
-        model.addAttribute("pageTitle","Cancel flights");
+        model.addAttribute("error","Hóa đơn không tồn tại!");
+        model.addAttribute("pageTitle","Hủy chuyến bay");
         return "client/searchOrder";
     }
 }

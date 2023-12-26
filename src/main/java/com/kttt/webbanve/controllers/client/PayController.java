@@ -64,8 +64,8 @@ public class PayController {
         Customer customer = new Customer();
         Barcode makeBarcode = new Barcode();
         if(cus.getFullname() == null || cus.getPhone() == null || cus.getAddress() == null || cus.getEmail() == null || cus.getCitizenIdentification() == null){
-            model.addAttribute("pageTitle","Payment");
-            model.addAttribute("error","Fill all blank!");
+            model.addAttribute("pageTitle","Thanh toán");
+            model.addAttribute("error","Không được để trống!");
             return "client/payment";
         }
         String fullname = cus.getFullname();
@@ -184,7 +184,7 @@ public class PayController {
             return "/admin/ticket/qrreader/fail";
         ArrayList<Ticket> tickets = ticketService.getTicketsByOrderID(orderInfo.getOrderID());
         generatePdfService.exportTicket(tickets);
-        String body = "Xin chao "+orderInfo.getCustomer().getFullname()+"\n\tVé máy bay của bạn đã được tạo thành công!\n\t Tệp đính kèm phía dưới.";
+        String body = "Xin chào "+orderInfo.getCustomer().getFullname()+"\n\tVé máy bay của bạn đã được tạo thành công!\n\t Tệp đính kèm phía dưới.";
         String subject = "GOGO - EXPORT PDF TICKET";
         mailSenderService.sendMailWithAttachment_Ticket(orderInfo.getCustomer().getEmail(),body,subject,tickets);
         return "/admin/ticket/qrreader/success";
