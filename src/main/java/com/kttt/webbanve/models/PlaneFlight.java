@@ -19,19 +19,4 @@ public class PlaneFlight {
     @JoinColumn(name = "planeID")
     private int planeID;
 
-    public int getFlightID() {
-        return flightID;
-    }
-
-    public void setFlightID(int flightID) {
-        this.flightID = flightID;
-    }
-
-    public int getPlaneID() {
-        return planeID;
-    }
-
-    public void setPlaneID(int planeID) {
-        this.planeID = planeID;
-    }
 }

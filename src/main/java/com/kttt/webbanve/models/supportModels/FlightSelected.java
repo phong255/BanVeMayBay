@@ -1,19 +1,17 @@
 package com.kttt.webbanve.models.supportModels;
 
-import com.kttt.webbanve.models.Customer;
-import com.kttt.webbanve.models.Flight;
-import com.kttt.webbanve.models.Luggage;
-import com.kttt.webbanve.models.Seat;
+import com.kttt.webbanve.models.*;
 
 import java.util.ArrayList;
 
 public class FlightSelected {
-    public Luggage luggage;
-    public Customer customer;
-    public Seat seat;
-    public Flight flight;
-    public long airfares;
-    public ArrayList<Seat> seats;
+    private Luggage luggage;
+    private Customer customer;
+    private Seat seat;
+    private Flight flight;
+    private long airfares;
+
+    private ArrayList<Seat> seats;
 
     public void setAirfares(long airfares) {
         this.airfares = airfares;

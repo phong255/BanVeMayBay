@@ -69,6 +69,7 @@
     <tr>
       <th th:replace="~{admin/fragmentsAdmin :: column_link('airlineID', 'ID hãng hàng không', 'airlineCompanies')}"></th>
       <th th:replace="~{admin/fragmentsAdmin :: column_link('airlineName', 'Tên hãng hàng không', 'airlineCompanies')}"></th>
+      <th th:replace="~{admin/fragmentsAdmin :: column_link('airline_fee', 'Phí hãng hàng không', 'airlineCompanies')}"></th>
       <th>Logo</th>
       <th style="width: 170px;">Chức năng</th>
     </tr>
@@ -78,6 +79,7 @@
       <tr th:each="airlineCompany : ${listAirlineCompany}">
         <td>[[${airlineCompany.airlineID}]]</td>
         <td>[[${airlineCompany.airlineName}]]</td>
+        <td><span th:text="${#numbers.formatCurrency(airlineCompany.airline_fee)}"></span></td>
         <td>
           <span th:if="${airlineCompany.airlineLogo == null}" class="fas fa-portrait fa-3x icon-silver"></span>
           <img th:if="${airlineCompany.airlineLogo != null}" th:src="@{${airlineCompany.getPhotosImagePath()}}" style="width: 200px;"/>

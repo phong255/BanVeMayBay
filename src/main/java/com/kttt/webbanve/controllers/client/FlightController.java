@@ -202,7 +202,7 @@ public class FlightController {
         long total=0;
         for (FlightSelected f :
                 flightSelecteds) {
-            total += f.getFlight().getFeeFlight();
+            total += f.getFlight().getFeeFlight() + f.getFlight().getPlanes().get(0).getAirlineCompany().getAirline_fee();
         }
         return total;
     }
